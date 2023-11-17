@@ -7,3 +7,5 @@ voteVersions: create version & push voteVersions[version].votes
 
 Developer
 voteVersions: push voteVersions[version].votes
+
+Test commit from sz
