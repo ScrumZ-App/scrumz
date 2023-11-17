@@ -14,5 +14,10 @@
     "nuxt": "^3.8.1",
     "vue": "^3.3.8",
     "vue-router": "^4.2.5"
+  },
+  "dependencies": {
+    "firebase": "^10.6.0",
+    "nuxt-vuefire": "^0.4.1",
+    "vuefire": "^3.1.18"
   }
 }
