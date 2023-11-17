@@ -1,4 +1,5 @@
 <template>
+  {{ user }}
   <ul>
     <li v-for="todo in todos">
       <span>{{ todo.text }}</span>
@@ -15,6 +16,7 @@ import { ref as dbRef, push } from 'firebase/database'
 export default {
   data() {
     return {
+      user: useCurrentUser(),
       todos: [
         { text: 'Learn JavaScript' },
         { text: 'Learn Vue' },

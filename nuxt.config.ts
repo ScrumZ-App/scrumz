@@ -6,6 +6,9 @@ export default defineNuxtConfig({
     'nuxt-vuefire'
   ],
   vuefire: {
+    auth: {
+      enabled: true
+    },
     config: {
       apiKey: 'AIzaSyBJvIxD974Fn42MG7fkZ7B9bm6HpOlGL9M',
       authDomain: 'scrumz-app.firebaseapp.com',
