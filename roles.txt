@@ -1,0 +1,9 @@
+Scrum Master
+sessionShouldEndOn - edit
+voteShouldEndOn - edit
+settings - edit
+options - edit
+voteVersions: create version & push voteVersions[version].votes
+
+Developer
+voteVersions: push voteVersions[version].votes
