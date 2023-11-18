@@ -18,6 +18,8 @@
   "dependencies": {
     "firebase": "^10.6.0",
     "nuxt-vuefire": "^0.4.1",
+    "vue-clipboard2": "^0.3.3",
+    "vue-qrcode": "^2.2.0",
     "vuefire": "^3.1.18"
   }
 }

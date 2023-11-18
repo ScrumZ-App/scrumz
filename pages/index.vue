@@ -8,5 +8,21 @@
     <a href="/room">Join Room</a>
     
     </button>
+    <button>
+        
+    </button>
+    <CopyUrl/>
+    <QrCode/>
+   
+    
 </template>
-  
+  <script>
+import QrCode from '~/components/QrCode.vue';
+import CopyUrl from '~/components/CopyUrl.vue';
+export default{
+    components :{
+        QrCode,
+        CopyUrl
+    }
+}
+</script>
