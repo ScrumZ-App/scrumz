@@ -3,11 +3,18 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
     // ... other modules
-    'nuxt-vuefire'
+    'nuxt-vuefire',
+    '@nuxt/image'
   ],
   vuefire: {
     auth: {
-      enabled: false
+      enabled: true
+    },
+    appCheck: {
+      debug: process.env.NODE_ENV !== 'production',
+      isTokenAutoRefreshEnabled: true,
+      provider: 'ReCaptchaV3',
+      key: '6Ld1pywpAAAAAGwmMqHTBZWjIWob9mcO4J77qLzT'
     },
     config: {
       apiKey: 'AIzaSyBJvIxD974Fn42MG7fkZ7B9bm6HpOlGL9M',

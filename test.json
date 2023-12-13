@@ -1,5 +1,6 @@
 {
   "id": 81481825481,
+  "createdBy": 1,
   "key": "patates-kimyasal-terminal",
   "sessionShouldEndOn": "2019-11-11T13:00:00.000Z",
   "voteShouldEndOn": "2013-11-11T13:00:00.000Z",
@@ -12,49 +13,42 @@
     "annoyDuration": 10,
     "maximumEmptyVoteCount": 1
   },
-  "options": [
-    {
-      "id": 1,
+  "options": {
+    "1": {
       "value": "XXS",
       "position": 1 // ekranda gösterilecek sıra
     },
-    {
-      "id": 2,
+    "2": {
       "value": "S",
       "position": 3
     },
-    {
-      "id": 3,
+    "3": {
       "value": "XS",
       "position": 2
     },
-    {
+    "4": {
       "id": 4,
       "value": "M",
       "position": 4
     },
-    {
-      "id": 5,
+    "5": {
       "value": "L",
       "position": 5
     },
-    {
-      "id": 6,
+    "6": {
       "value": "XL",
       "position": 6
     },
-    {
-      "id": 7,
+    "7": {
       "value": "XXL",
       "position": 7
     },
-    {
-      "id": 8,
+    "8": {
       "value": "?",
       "position": 8,
       "isEmpty": true // boş oy
     }
-  ],
+  },
   "users": [
     {
       "id": 1,
@@ -63,35 +57,18 @@
       "status": true
     }
   ],
-  "voteVersions": [
-    {
-      "version": 1,
-      "votes": [
-        {
-          "id": 1,
-          "user": 1,
-          "value": 6
-        },
-        {
-          "id": 2,
-          "user": 1,
-          "value": 5
-        }
-      ]
-    },
-    {
-      "version": 2,
-      "votes": [
-        {
-          "id": 2,
-          "user": 1,
-          "value": 5
-        }
-      ]
-    },
-    {
-      "version": 3,
-      "votes": []
+  "voteVersions": {
+    "1": {
+      // $$versionNumber
+      "1": {
+        // $vote
+        "user": 1,
+        "value": 6
+      },
+      "2": {
+        "user": 1,
+        "value": 5
+      }
     }
-  ]
+  }
 }

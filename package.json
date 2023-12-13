@@ -12,14 +12,19 @@
   "devDependencies": {
     "@nuxt/devtools": "latest",
     "nuxt": "^3.8.1",
+    "sass": "^1.69.5",
     "vue": "^3.3.8",
     "vue-router": "^4.2.5"
   },
   "dependencies": {
+    "@nuxt/image": "^1.1.0",
+    "@nuxtjs/toast": "^3.3.1",
     "firebase": "^10.6.0",
+    "firebase-admin": "^11.11.1",
     "nuxt-vuefire": "^0.4.1",
     "vue-clipboard2": "^0.3.3",
     "vue-qrcode": "^2.2.0",
+    "vue-toast-notification": "^3.1.2",
     "vuefire": "^3.1.18"
   }
 }
