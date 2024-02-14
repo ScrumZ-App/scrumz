@@ -21,7 +21,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 @import url('https://fonts.googleapis.com/css2?family=Afacad:wght@400;600;700&display=swap');
 
 :root {
@@ -46,43 +46,37 @@ button {
   font-family: 'Afacad', sans-serif;
 }
 
+html {
+  font-size: 1.25vw;
+}
+
+@media (max-aspect-ratio: 1/1) {
+  html {
+    font-size: 2vh;
+  }
+}
+
 html,
 body {
   background-color: var(--color-background);
 }
 
-@keyframes shiny {
-  0% {
-    transform: scale(0) rotate(45deg);
-    opacity: 0;
+.page-enter-active,
+.page-leave-active {
+  transition: all 1s;
+  .bento-grid {
+    transition: all 1s;
   }
-  5% {
-    transform: scale(0) rotate(45deg);
-    opacity: 0.5;
-  }
-  10% {
-    transform: scale(4) rotate(45deg);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(50) rotate(45deg);
-    opacity: 0;
-  }
-  100% {
-    transform: scale(50) rotate(45deg);
-    opacity: 0;
+}
+.page-enter-from {
+  .bento-grid {
+    transform: translateY(100%);
   }
 }
 
-@keyframes bounce {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    transform: scale(1);
+.page-leave-to {
+  .bento-grid {
+    transform: translateY(-100%);
   }
 }
 </style>

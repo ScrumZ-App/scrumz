@@ -43,7 +43,8 @@ This project aims to create a planning application where users can vote, non-vot
 2. Go to the project's root directory.
 3. Run the `npm install` command to install dependencies.
 4. Configure your Firebase connection details.
-5. Start the application with the `npm run dev` command.
+5. Get your service-account.json from [https://console.firebase.google.com/project/scrumz-app/settings/serviceaccounts/adminsdk](here) and place it in the root directory.
+6. Start the application with the `npm run dev` command.
 
 ## Usage
 
