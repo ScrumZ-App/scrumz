@@ -5,7 +5,7 @@
       <div class="title"><slot name="title" /></div>
       <div v-if="mirror" class="title-mirror"><slot name="title" /></div>
       <div class="icon"><slot name="icon" /></div>
-      <div class="status-badge"></div>
+      <div class="status-badge" />
     </div>
     <div v-if="flip" class="back">
       <slot name="back" />
@@ -18,36 +18,36 @@ export default {
   props: {
     width: {
       type: String,
-      default: '8'
+      default: '8',
     },
     height: {
       type: String,
-      default: '12'
+      default: '12',
     },
     flip: {
       type: Boolean,
-      default: false
+      default: false,
     },
     custom: {
       type: Boolean,
-      default: false
+      default: false,
     },
     badge: {
       type: Boolean,
-      default: false
+      default: false,
     },
     background: {
       type: String,
-      default: 'var(--color-white)'
+      default: 'var(--color-white)',
     },
     color: {
       type: String,
-      default: 'var(--color-black)'
+      default: 'var(--color-black)',
     },
     mirror: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     style() {
@@ -55,14 +55,14 @@ export default {
         '--card-width': `${this.width * 2}rem`,
         '--card-height': `${this.height * 2}rem`,
         '--card-background': this.background,
-        color: this.color
+        'color': this.color,
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style>
+<style lang="scss">
 .card-component {
   width: var(--card-width);
   height: var(--card-height);

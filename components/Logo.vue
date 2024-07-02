@@ -12,10 +12,11 @@
   </Card>
 </template>
 
-<style>
+<style lang="scss">
 .logo {
   user-select: none;
   cursor: pointer;
+
   .front {
     display: flex;
     align-items: center;

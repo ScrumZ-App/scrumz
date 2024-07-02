@@ -3,11 +3,11 @@ export default defineNuxtPlugin((nuxtApp) => {
     nuxtApp.$toast.open({
       message: event.reason,
       type: 'error',
-      duration: 10000
+      duration: 10000,
     })
   }
 
-  window.onerror = function (message, source, lineNumber, colno, error) {
+  window.onerror = function (message, _source, _lineNumber, _colno, _error) {
     console.warn(`UNHANDLED ERROR: ${message}`)
   }
 })

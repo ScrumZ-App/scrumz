@@ -11,28 +11,28 @@ export default {
   props: {
     name: {
       type: String,
-      default: 'bento'
+      default: 'bento',
     },
     width: {
       type: String,
-      default: '35'
+      default: '35',
     },
     height: {
       type: String,
-      default: '21'
+      default: '21',
     },
     gap: {
       type: String,
-      default: '1'
+      default: '1',
     },
     areas: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     columns: {
       type: Array,
-      default: () => [8, 17, 8]
-    }
+      default: () => [8, 17, 8],
+    },
   },
   computed: {
     style() {
@@ -45,10 +45,10 @@ export default {
         '--bento-grid-template-columns': `${this.columns
           .map((col) => `${col * 2}rem`)
           .join(' ')}`,
-        '--bento-gap': `${this.gap * 2}rem`
+        '--bento-gap': `${this.gap * 2}rem`,
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

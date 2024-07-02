@@ -13,16 +13,16 @@ import QRCode from 'vue-qrcode'
 
 export default {
   components: {
-    QRCode
+    QRCode,
   },
   data() {
     return {
-      currentURL: ''
+      currentURL: '',
     }
   },
   mounted() {
-    if (!process.browser) return
+    if (typeof window !== 'undefined') return
     this.currentURL = window.location.href
-  }
+  },
 }
 </script>

@@ -8,16 +8,10 @@
 export default {
   methods: {
     copyToClipboard() {
-      if (!process.browser) return
-      var dummy = document.createElement('input')
-      var text = window.location.href
-
-      document.body.appendChild(dummy)
-      dummy.value = text
-      dummy.select()
-      document.execCommand('copy')
-      document.body.removeChild(dummy)
-    }
-  }
+      if (typeof window !== 'undefined') return
+      const text = window.location.href
+      navigator.clipboard.writeText(text)
+    },
+  },
 }
 </script>

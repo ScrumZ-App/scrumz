@@ -1,14 +1,16 @@
 <template>
-  <DebugCode>
-    <span>Loading: {{ loading }}</span>
-    <span>Room ID: {{ roomId }}</span>
-    <span>User: {{ user }}</span>
-    <span>Role: {{ role }}</span>
-    <span>Raw Room Info:</span>
-    <span>{{ JSON.stringify(room, null, 2) }}</span>
-  </DebugCode>
-  <CopyURL />
-  <CurrentURLQrCode />
+  <div class="room-id-page">
+    <DebugCode>
+      <span>Loading: {{ loading }}</span>
+      <span>Room ID: {{ roomId }}</span>
+      <span>User: {{ user }}</span>
+      <span>Role: {{ role }}</span>
+      <span>Raw Room Info:</span>
+      <span>{{ JSON.stringify(room, null, 2) }}</span>
+    </DebugCode>
+    <CopyURL />
+    <CurrentURLQrCode />
+  </div>
 </template>
 
 <script>
@@ -22,16 +24,8 @@ export default {
       user: '',
       role: '',
       room: {},
-      newTodoText: ''
+      newTodoText: '',
     }
-  },
-  async mounted() {
-    this.roomId = this.$route.params.id
-    this.user = await getCurrentUser()
-    console.log(this.roomId, this.user.uid)
-    this.room = await useDatabaseObject(
-      dbRef(useDatabase(), 'rooms/' + this.roomId)
-    )
   },
   watch: {
     room: {
@@ -52,8 +46,16 @@ export default {
           }
         }
       },
-      deep: true
-    }
+      deep: true,
+    },
+  },
+  async mounted() {
+    this.roomId = this.$route.params.id
+    this.user = await getCurrentUser()
+    console.log(this.roomId, this.user.uid)
+    this.room = await useDatabaseObject(
+      dbRef(useDatabase(), 'rooms/' + this.roomId)
+    )
   },
   methods: {
     userAlreadyInRoom() {
@@ -77,12 +79,12 @@ export default {
       )
       try {
         await update(usersRef, {
-          name: 'Test User' + Math.random()
+          name: 'Test User' + Math.random(),
         })
       } catch (error) {
         console.error(error)
       }
-    }
-  }
+    },
+  },
 }
 </script>

@@ -17,7 +17,7 @@ export default {
       console.log('Signed in anonymously')
       console.dir({ ...user })
     }
-  }
+  },
 }
 </script>
 

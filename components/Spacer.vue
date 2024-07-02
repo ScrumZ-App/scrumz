@@ -1,9 +1,3 @@
 <template>
-  <div class="spacer"></div>
+  <div class="spacer" />
 </template>
-
-<style lang="scss">
-.spacer {
-  /* TODO */
-}
-</style>

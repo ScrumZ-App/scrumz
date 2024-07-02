@@ -7,7 +7,7 @@
       'coffee mood info',
       'coffee mood join',
       'coffee mood create',
-      'coffee mood create'
+      'coffee mood create',
     ]"
   >
     <Logo />
@@ -38,23 +38,21 @@
         </span>
       </template>
     </Card>
-    <Press class="join-button" @click="joinRoom" badge>
+    <Press class="join-button" badge @click="joinRoom">
       <span> join room </span>
-      <!-- <input type="text" placeholder="join room" />
-        <div class="status-icon"></div> -->
     </Press>
     <Press
       class="create-button"
-      @click="createRoom"
       height="4"
       size="250%"
       background="var(--color-primary)"
       color="var(--color-white)"
       badge
+      @click="createRoom"
     >
-      <span> create<br />room </span>
+      <span style="width: 0px"> create room </span>
     </Press>
-    <Spacer class="spacer"></Spacer>
+    <Spacer class="spacer" />
   </Bento>
 </template>
 
@@ -66,8 +64,8 @@ export default {
     },
     joinRoom() {
       this.$router.push('/join')
-    }
-  }
+    },
+  },
 }
 </script>
 

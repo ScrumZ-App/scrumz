@@ -1,11 +1,11 @@
 <template>
   {{ user }}
   <ul>
-    <li v-for="todo in todos">
+    <li v-for="todo in todos" :key="todo">
       <span>{{ todo.text }}</span>
     </li>
     <input v-model="newTodoText" />
-    <button v-on:click="addTodo">Add</button>
+    <button @click="addTodo">Add</button>
   </ul>
 </template>
 
@@ -20,9 +20,9 @@ export default {
       todos: [
         { text: 'Learn JavaScript' },
         { text: 'Learn Vue' },
-        { text: 'Build something awesome' }
+        { text: 'Build something awesome' },
       ],
-      newTodoText: ''
+      newTodoText: '',
     }
   },
 
@@ -37,7 +37,7 @@ export default {
       const todosRef = dbRef(useDatabase(), 'todos')
       push(todosRef, { text: this.newTodoText })
       this.newTodoText = ''
-    }
-  }
+    },
+  },
 }
 </script>

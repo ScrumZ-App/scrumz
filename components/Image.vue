@@ -7,20 +7,20 @@ export default {
   props: {
     width: {
       type: String,
-      default: '8'
+      default: '8',
     },
     height: {
       type: String,
-      default: '8'
+      default: '8',
     },
     alt: {
       type: String,
-      default: 'Picture'
+      default: 'Picture',
     },
     src: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   computed: {
     style() {
@@ -28,9 +28,9 @@ export default {
         width: `${this.width * 2}rem`,
         height: `${this.height * 2}rem`,
         background: `url(${this.src}) no-repeat center center`,
-        backgroundSize: 'contain'
+        backgroundSize: 'contain',
       }
-    }
-  }
+    },
+  },
 }
 </script>

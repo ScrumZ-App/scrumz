@@ -10,7 +10,7 @@ console.log(__dirname)
 const rawData = readFileSync(join(__dirname, 'gts.json'), 'utf8')
 const gts = rawData.split('\n').filter(Boolean).map(JSON.parse)
 
-const Yok = (bilesen) => {
+const isFalsy = (bilesen) => {
   if (bilesen === '0') return true
   if (bilesen === 0) return true
   if (bilesen === '') return true
@@ -23,24 +23,26 @@ const Yok = (bilesen) => {
   return false
 }
 
-const Var = (bilesen) => {
-  return !Yok(bilesen)
+const isTruthy = (component) => {
+  return !isFalsy(component)
 }
 
-const ozellikVar = (word, ozellik_id) => {
-  return word.anlamlarListe?.some((anlam) =>
-    anlam.ozelliklerListe?.some((ozellik) => ozellik.ozellik_id === ozellik_id)
+const hasProperty = (word, ozellik_id) => {
+  return word.anlamlarListe?.some((meaning) =>
+    meaning.ozelliklerListe?.some(
+      (property) => property.ozellik_id === ozellik_id
+    )
   )
 }
 
 const XFilter = (all, customFilter = () => true) => {
   return all
     .filter((word) => {
-      if (Var(word.on_taki)) return false
-      if (Var(word.cogul_mu)) return false
-      if (Var(word.ozel_mi)) return false
-      if (ozellikVar(word, '31')) return false // eskiyi sil
-      if (ozellikVar(word, '30') || ozellikVar(word, '36')) return false // argoyu ve kabayı sil
+      if (isTruthy(word.on_taki)) return false
+      if (isTruthy(word.cogul_mu)) return false
+      if (isTruthy(word.ozel_mi)) return false
+      if (hasProperty(word, '31')) return false // remove old
+      if (hasProperty(word, '30') || hasProperty(word, '36')) return false // delete slang and vulgar
       if (word.lisan_kodu !== '0') return false
       return true
     })
@@ -52,7 +54,7 @@ const XFilter = (all, customFilter = () => true) => {
     })
 }
 
-let tumSifatlar = XFilter(
+let allAdjectives = XFilter(
   gts.filter(
     (word) => word.anlamlarListe?.[0]?.ozelliklerListe?.[0]?.tam_adi === 'sıfat'
   ),
@@ -62,7 +64,7 @@ let tumSifatlar = XFilter(
   }
 )
 
-let tumIsimler = XFilter(
+let allNames = XFilter(
   gts.filter(
     (word) => word.anlamlarListe?.[0]?.ozelliklerListe?.[0]?.tam_adi === 'isim'
   ),
@@ -79,17 +81,19 @@ let tumIsimler = XFilter(
   }
 )
 
-console.log(tumSifatlar.length)
-console.log(tumIsimler.length)
-// random 10 sifat+isim
+console.log(allAdjectives.length)
+console.log(allNames.length)
+
+// random 10 adjective + name
 const random = () => {
-  const sifat = tumSifatlar[Math.floor(Math.random() * tumSifatlar.length)]
-  const isim = tumIsimler[Math.floor(Math.random() * tumIsimler.length)]
-  return `${sifat.madde} ${isim.madde}`
+  const adjective =
+    allAdjectives[Math.floor(Math.random() * allAdjectives.length)]
+  const name = allNames[Math.floor(Math.random() * allNames.length)]
+  return `${adjective.madde} ${name.madde}`
 }
 
-// random isim
-console.log(tumIsimler[Math.floor(Math.random() * tumIsimler.length)])
+// random name
+console.log(allNames[Math.floor(Math.random() * allNames.length)])
 
 let errorRate = 0
 let randoms = []
@@ -103,4 +107,4 @@ for (let i = 0; i < 100; i++) {
   randoms.push(chosen)
 }
 
-console.log(randoms)
+console.log(errorRate, randoms)
