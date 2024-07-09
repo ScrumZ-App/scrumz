@@ -19,7 +19,7 @@ export default {
     },
     height: {
       type: String,
-      default: '18',
+      default: '21',
     },
     gap: {
       type: String,

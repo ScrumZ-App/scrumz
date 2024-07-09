@@ -1,17 +1,19 @@
 <template>
-  <NuxtPage />
+  <NuxtLayout name="default">
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 
 <script>
 // TODO wait for auth, loading screen
-import { signInAnonymously } from 'firebase/auth'
+import { getAuth, signInAnonymously } from 'firebase/auth'
 import 'vue-toast-notification/dist/theme-sugar.css'
 
 export default {
   async beforeMount() {
     const user = await getCurrentUser()
     if (!user) {
-      await signInAnonymously(useFirebaseAuth())
+      await signInAnonymously(getAuth())
     }
     if (process.env.NODE_ENV === 'development') {
       console.log('Signed in anonymously')

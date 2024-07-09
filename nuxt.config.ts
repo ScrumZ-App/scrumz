@@ -1,3 +1,9 @@
+// read debug-token.json
+import { token } from './debug-token.json'
+if (!token) {
+  throw new Error('Missing debug token')
+}
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   app: {
@@ -9,13 +15,18 @@ export default defineNuxtConfig({
     'nuxt-vuefire',
     '@nuxt/image',
     '@nuxt/eslint',
+    '@pinia/nuxt',
   ],
+  pinia: {
+    storesDirs: ['./store/**'],
+  },
   vuefire: {
     auth: {
       enabled: true,
     },
     appCheck: {
-      debug: process.env.NODE_ENV !== 'production',
+      // get from .env
+      debug: process.env.NODE_ENV !== 'production' ? token : false,
       isTokenAutoRefreshEnabled: true,
       provider: 'ReCaptchaV3',
       key: '6Ld1pywpAAAAAGwmMqHTBZWjIWob9mcO4J77qLzT',

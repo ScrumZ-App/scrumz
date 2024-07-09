@@ -1,7 +1,7 @@
 export default defineNuxtPlugin((nuxtApp) => {
   window.onunhandledrejection = (event) => {
     nuxtApp.$toast.open({
-      message: event.reason,
+      message: String(event?.reason) || '',
       type: 'error',
       duration: 10000,
     })
