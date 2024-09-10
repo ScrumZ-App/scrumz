@@ -3,6 +3,7 @@
     name="create"
     :areas="['logo fibonacci t-shirt']"
     :columns="[8, 8, 8, 8]"
+    height="12"
   >
     <To href="/"><Logo /></To>
     <Card class="card" flip locked mirror @click="create('fibonacci')">

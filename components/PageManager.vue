@@ -1,8 +1,6 @@
 <template>
-  <div :class="name">
-    <div class="bento-grid" :style="style">
-      <slot />
-    </div>
+  <div class="bento-grid" :class="name" :style="style">
+    <slot />
   </div>
 </template>
 
@@ -76,7 +74,7 @@ export default {
 
   /* for 1 to 20 in scss*/
   @for $i from 1 through 20 {
-    & > *:nth-of-type(#{$i}) {
+    &.loading > *:nth-of-type(#{$i}) {
       opacity: 0;
       animation: slide-in
         0.5s

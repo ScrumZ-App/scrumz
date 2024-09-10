@@ -73,7 +73,9 @@ export default {
   height: var(--bento-height);
   align-content: center;
   justify-content: center;
+}
 
+.loading .bento-grid {
   /* for 1 to 20 in scss*/
   @for $i from 1 through 20 {
     & > *:nth-of-type(#{$i}) {
@@ -82,7 +84,7 @@ export default {
         0.5s
         cubic-bezier(0.25, 0.46, 0.45, 0.94)
         #{0.2 +
-        ($i * 0.05)}s
+        (0.1 + $i * 0.05)}s
         forwards;
     }
   }
