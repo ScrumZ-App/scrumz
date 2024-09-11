@@ -4,13 +4,23 @@
     <slot />
   </div>
   <template v-for="(page, pageIndex) in /* last two */ pages.slice(-2)">
+    <PagesHome
+      v-if="page === '/'"
+      :class="unloadClass(pageIndex)"
+      :key="page"
+    />
     <PagesCreate
       v-if="page === '/create'"
       :class="unloadClass(pageIndex)"
       :key="page"
     />
-    <PagesHome
-      v-if="page === '/'"
+    <PagesJoin
+      v-if="page === '/join'"
+      :class="unloadClass(pageIndex)"
+      :key="page"
+    />
+    <PagesRoom
+      v-if="page.startsWith('/room/')"
       :class="unloadClass(pageIndex)"
       :key="page"
     />
@@ -23,7 +33,7 @@ import { useRouter } from 'vue-router'
 import { useLayoutStore } from '@/store'
 const router = useRouter()
 const store = useLayoutStore()
-const { currentPage, pages } = storeToRefs(store)
+const { pages } = storeToRefs(store)
 const isServer = process.server
 
 router.beforeEach((to, from, next) => {
@@ -41,22 +51,17 @@ const unloadClass = (pageIndex) => {
 <style>
 @keyframes something {
   0% {
-    /* transform: translateY(0); */
-    opacity: 1;
     max-height: 100vh;
-  }
-  10% {
-    margin-top: 0;
+    opacity: 1;
   }
   100% {
-    /* transform: translateY(-100%); */
-    opacity: 0;
-    /* margin-top: -40%; */
     max-height: 0;
+    opacity: 0;
   }
 }
 
 .unloading {
   animation: something 0.5s ease-out forwards;
+  pointer-events: none;
 }
 </style>

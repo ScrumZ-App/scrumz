@@ -1,7 +1,7 @@
 <template>
   <Bento
     name="create"
-    :areas="['logo fibonacci t-shirt']"
+    :areas="['logo fibonacci t-shirt custom']"
     :columns="[8, 8, 8, 8]"
     height="12"
   >
@@ -86,10 +86,24 @@
 
 <script>
 export default {
+  data() {
+    return {
+      user: '',
+    }
+  },
   methods: {
-    create(type) {
-      console.log(type)
+    async create(type) {
+      const roomName = await this.$scrumz.createRoom({
+        uid: this.user.uid,
+        type,
+      })
+
+      // go room page
+      this.$to(`/room/${roomName}`)
     },
+  },
+  async mounted() {
+    this.user = await getCurrentUser()
   },
 }
 </script>

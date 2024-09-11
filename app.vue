@@ -16,8 +16,7 @@ export default {
       await signInAnonymously(getAuth())
     }
     if (process.env.NODE_ENV === 'development') {
-      console.log('Signed in anonymously')
-      console.dir({ ...user })
+      console.log('Signed in anonymously. UID:', user.uid)
     }
   },
 }

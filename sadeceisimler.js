@@ -59,7 +59,7 @@ let allAdjectives = XFilter(
     (word) => word.anlamlarListe?.[0]?.ozelliklerListe?.[0]?.tam_adi === 'sıfat'
   ),
   (word) => {
-    if (word.madde.length < 3 || word.madde.length > 7) return false
+    if (word.madde.length < 3 || word.madde.length > 8) return false
     return true
   }
 )
@@ -69,14 +69,14 @@ let allNames = XFilter(
     (word) => word.anlamlarListe?.[0]?.ozelliklerListe?.[0]?.tam_adi === 'isim'
   ),
   (word) => {
-    if (word.madde.match(/(siz|suz|si)$/)) return false
-    if (word.madde.match(/(ma|me)$/)) return false
-    if (word.madde.match(/(ci|cı|ca|ce)$/)) return false
-    if (word.madde.match(/(lik|lık|luk)$/)) return false
-    if (word.madde.match(/(cuk|cik)$/)) return false
-    if (word.madde.match(/(lu|lı|li)$/)) return false
-    if (word.madde.match(/(sul)$/)) return false
-    if (word.madde.length < 3 || word.madde.length > 6) return false
+    // if (word.madde.match(/(siz|suz|si)$/)) return false
+    // if (word.madde.match(/(ma|me)$/)) return false
+    // if (word.madde.match(/(ci|cı|ca|ce)$/)) return false
+    // if (word.madde.match(/(lik|lık|luk)$/)) return false
+    // if (word.madde.match(/(cuk|cik)$/)) return false
+    // if (word.madde.match(/(lu|lı|li)$/)) return false
+    // if (word.madde.match(/(sul)$/)) return false
+    if (word.madde.length < 3 || word.madde.length > 7) return false
     return true
   }
 )
@@ -93,11 +93,11 @@ const random = () => {
 }
 
 // random name
-console.log(allNames[Math.floor(Math.random() * allNames.length)])
+// console.log(allNames[Math.floor(Math.random() * allNames.length)])
 
 let errorRate = 0
 let randoms = []
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 10000; i++) {
   let chosen = random()
   // if duplicate, push again
   while (randoms.includes(chosen)) {
@@ -107,4 +107,9 @@ for (let i = 0; i < 100; i++) {
   randoms.push(chosen)
 }
 
-console.log(errorRate, randoms)
+// console.log(errorRate, randoms)
+console.log(
+  allAdjectives.map((e) => e.madde).join(',') +
+    '|' +
+    allNames.map((e) => e.madde).join(',')
+)

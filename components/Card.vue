@@ -1,5 +1,9 @@
 <template>
-  <div class="card-component" :class="{ flip, custom, badge }" :style="style">
+  <div
+    class="card-component"
+    :class="{ back, flip, custom, badge }"
+    :style="style"
+  >
     <div v-if="custom" class="front"><slot name="front" /></div>
     <div v-else class="front">
       <div class="title"><slot name="title" /></div>
@@ -7,7 +11,7 @@
       <div class="icon"><slot name="icon" /></div>
       <div class="status-badge" />
     </div>
-    <div v-if="flip" class="back">
+    <div v-if="true" class="back">
       <slot name="back" />
     </div>
   </div>
@@ -25,6 +29,10 @@ export default {
       default: '12',
     },
     flip: {
+      type: Boolean,
+      default: false,
+    },
+    back: {
       type: Boolean,
       default: false,
     },
@@ -92,6 +100,7 @@ export default {
       font-size: 200%;
       font-weight: 600;
       color: var(--color-black);
+      display: inline-flex;
     }
 
     .title-mirror {
@@ -110,6 +119,13 @@ export default {
     }
   }
 
+  .back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: perspective(64rem) rotateY(-180deg);
+  }
+
   &.badge {
     .status-badge {
       width: 3rem;
@@ -122,6 +138,15 @@ export default {
     }
   }
 
+  &.back {
+    .front {
+      transform: perspective(64rem) rotateY(180deg);
+    }
+    .back {
+      transform: perspective(64rem) rotateY(0);
+    }
+  }
+
   &.flip {
     &:hover {
       .front {
@@ -130,13 +155,6 @@ export default {
       .back {
         transform: perspective(64rem) rotateY(0);
       }
-    }
-
-    .back {
-      transform: perspective(64rem) rotateY(-180deg);
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
   }
 }

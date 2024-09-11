@@ -14,7 +14,7 @@ export default defineNuxtPlugin((App) => {
     }
   }
 
-  console.log(App)
+  // console.log(App)
   return {
     provide: {
       to,
