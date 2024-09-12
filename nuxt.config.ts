@@ -1,7 +1,16 @@
-// read debug-token.json
-import { token } from './debug-token.json'
-if (!token) {
-  throw new Error('Missing debug token')
+// if dev, use debug-token.json
+import fs from 'fs'
+let token = ''
+if (process.env.NODE_ENV !== 'production') {
+  try {
+    const text = fs.readFileSync('./debug-token.json', 'utf-8')
+    const { token: debugToken } = JSON.parse(text)
+    token = debugToken
+    console.log('Debug token:', token)
+  } catch (e) {
+    // read debug-token.json
+    throw new Error('Missing debug token')
+  }
 }
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
