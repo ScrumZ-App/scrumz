@@ -18,6 +18,11 @@ export default defineNuxtConfig({
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
   },
+  nitro: {
+    prerender: {
+      routes: ['/'],
+    },
+  },
   devtools: { enabled: true },
   modules: [
     // ... other modules
