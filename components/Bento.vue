@@ -81,7 +81,7 @@ export default {
     & > *:nth-of-type(#{$i}) {
       opacity: 0;
       animation: slide-in
-        0.5s
+        0.2s
         cubic-bezier(0.25, 0.46, 0.45, 0.94)
         #{0.2 +
         (0.1 + $i * 0.05)}s

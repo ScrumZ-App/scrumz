@@ -14,9 +14,10 @@ export default {
   },
   methods: {
     disableRedirection(e) {
-      this.$to(e.currentTarget.attributes.href.value)
-      e.preventDefault()
-      return false
+      this.$router.push(e.href)
+      // this.$to(e.currentTarget.attributes.href.value)
+      // e.preventDefault()
+      // return false
     },
   },
 }

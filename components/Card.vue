@@ -1,7 +1,7 @@
 <template>
   <div
     class="card-component"
-    :class="{ back, flip, custom, badge }"
+    :class="{ 'has-back': back, flip, custom, badge }"
     :style="style"
   >
     <div v-if="custom" class="front"><slot name="front" /></div>
@@ -11,7 +11,11 @@
       <div class="icon"><slot name="icon" /></div>
       <div class="status-badge" />
     </div>
-    <div v-if="true" class="back">
+    <div class="back">
+      <template v-if="backTitle">
+        <div class="title"><slot name="title" /></div>
+        <div v-if="mirror" class="title-mirror"><slot name="title" /></div>
+      </template>
       <slot name="back" />
     </div>
   </div>
@@ -56,6 +60,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    backTitle: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     style() {
@@ -89,7 +97,8 @@ export default {
     border-radius: var(--border-radius);
   }
 
-  .front {
+  .front,
+  .back {
     transform: perspective(64rem) rotateY(0deg);
 
     .title,
@@ -138,7 +147,7 @@ export default {
     }
   }
 
-  &.back {
+  &.has-back {
     .front {
       transform: perspective(64rem) rotateY(180deg);
     }

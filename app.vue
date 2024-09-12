@@ -1,5 +1,5 @@
 <template>
-  <NuxtLayout name="default">
+  <NuxtLayout v-if="user" name="default">
     <NuxtPage />
   </NuxtLayout>
 </template>
@@ -10,13 +10,19 @@ import { getAuth, signInAnonymously } from 'firebase/auth'
 import 'vue-toast-notification/dist/theme-sugar.css'
 
 export default {
+  data() {
+    return {
+      user: null,
+    }
+  },
   async beforeMount() {
     const user = await getCurrentUser()
     if (!user) {
       await signInAnonymously(getAuth())
     }
+    this.user = await getCurrentUser()
     if (process.env.NODE_ENV === 'development') {
-      console.log('Signed in anonymously. UID:', user.uid)
+      console.log('Signed in anonymously. UID:', this.user.uid)
     }
   },
 }
@@ -62,18 +68,18 @@ body {
   background-color: var(--color-background);
 }
 
-.page-enter-active,
-.page-leave-active {
-  transition: all 1s;
-  .bento-grid {
-    transition: all 1s;
-  }
-}
-.page-enter-from {
-  .bento-grid {
-    transform: translateY(100%);
-  }
-}
+// .page-enter-active,
+// .page-leave-active {
+//   transition: all 0.4s;
+//   .bento-grid {
+//     transition: all 0.4s;
+//   }
+// }
+// .page-enter-from {
+//   .bento-grid {
+//     transform: translateY(100%);
+//   }
+// }
 
 .page-leave-to {
   .bento-grid {

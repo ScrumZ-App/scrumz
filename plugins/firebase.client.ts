@@ -82,17 +82,12 @@ export default defineNuxtPlugin((App) => {
         options: defaultRooms[type] || customOptions,
         users: {
           [uid]: {
-            name: 'John Doe',
+            name: '',
             role: 'scrum-master',
           },
         },
         version: 0,
       })
-
-      const exists = await this.roomExists(newId)
-      if (!exists) {
-        await new Promise((resolve) => setTimeout(resolve, 5000))
-      }
 
       return newId
     },
