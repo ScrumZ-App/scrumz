@@ -1,5 +1,5 @@
 <template>
-  <template v-if="loading"> Test </template>
+  <template v-if="loading"></template>
   <RoomNameInput
     v-else-if="user && (!user.name || showUserInput)"
     :room-id="roomId"

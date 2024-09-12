@@ -1,6 +1,6 @@
 <template>
-  <NuxtLayout v-if="user" name="default">
-    <NuxtPage />
+  <NuxtLayout name="default">
+    <NuxtPage v-if="user" />
   </NuxtLayout>
 </template>
 
