@@ -1,5 +1,5 @@
 <template>
-  <To href="/" class="back-button-component"></To>
+  <NuxtLink to="/" class="back-button-component"></NuxtLink>
 </template>
 
 <script>

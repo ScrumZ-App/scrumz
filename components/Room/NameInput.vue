@@ -6,7 +6,7 @@
     :columns="[35]"
     height="17"
   >
-    <To href="/"><Logo /></To>
+    <NuxtLink to="/"><Logo /></NuxtLink>
     <Card class="user-name-input" height="10" width="35">
       <template #title></template>
       <template #icon>

@@ -38,10 +38,12 @@
         </span>
       </template>
     </Card>
-    <Press class="join-button" badge @click="joinRoom">
-      <span> join room </span>
-    </Press>
-    <To href="/create">
+    <NuxtLink to="/join">
+      <Press class="join-button" badge>
+        <span> join room </span>
+      </Press>
+    </NuxtLink>
+    <NuxtLink to="/create">
       <Press
         class="create-button"
         height="4"
@@ -49,27 +51,13 @@
         background="var(--color-primary)"
         color="var(--color-white)"
         badge
-        @click="createRoom"
       >
         <span style="width: 0px"> create room </span>
       </Press>
-    </To>
+    </NuxtLink>
     <Spacer class="spacer" />
   </Bento>
 </template>
-
-<script>
-export default {
-  methods: {
-    createRoom() {
-      this.$to('/create')
-    },
-    joinRoom() {
-      this.$to('/join')
-    },
-  },
-}
-</script>
 
 <style lang="scss">
 .home {

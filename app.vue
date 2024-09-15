@@ -1,15 +1,19 @@
 <template>
   <NuxtLayout name="default">
-    <NuxtPage v-if="user" />
+    <NuxtPage />
   </NuxtLayout>
 </template>
 
 <script>
-// TODO wait for auth, loading screen
 import { getAuth, signInAnonymously } from 'firebase/auth'
 import 'vue-toast-notification/dist/theme-sugar.css'
 
 export default {
+  provide() {
+    return {
+      user: this.user,
+    }
+  },
   data() {
     return {
       user: null,
@@ -85,5 +89,11 @@ body {
   .bento-grid {
     transform: translateY(-100%);
   }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
 }
 </style>

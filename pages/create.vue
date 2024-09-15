@@ -5,7 +5,7 @@
     :columns="[8, 8, 8, 8]"
     height="12"
   >
-    <To href="/"><Logo /></To>
+    <NuxtLink to="/"><Logo /></NuxtLink>
     <Card class="card" flip locked mirror>
       <template #title> fibonacci </template>
       <template #icon>
@@ -88,7 +88,7 @@
 export default {
   data() {
     return {
-      user: '',
+      user: inject('user'),
     }
   },
   methods: {
@@ -99,11 +99,8 @@ export default {
       })
 
       // go room page
-      this.$to(`/room/${roomName}`)
+      this.$router.push(`/room/${roomName}`)
     },
-  },
-  async mounted() {
-    this.user = await getCurrentUser()
   },
 }
 </script>

@@ -55,6 +55,7 @@ export interface User {
 
 export default defineComponent({
   data(): {
+    parentUser: any
     loading: boolean
     roomId: string
     user: User | null
@@ -62,6 +63,7 @@ export default defineComponent({
     showUserInput: boolean
   } {
     return {
+      parentUser: inject('user'),
       loading: true,
       roomId: '',
       user: null,
@@ -70,11 +72,10 @@ export default defineComponent({
     }
   },
   async mounted() {
-    const user = await getCurrentUser()
     this.roomId =
       typeof this.$route.params.id === 'string' ? this.$route.params.id : ''
     this.user = {
-      uid: user.uid,
+      uid: this.parentUser.uid,
       name: '',
       role: 'developer',
     }

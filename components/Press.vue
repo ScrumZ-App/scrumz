@@ -1,5 +1,5 @@
 <template>
-  <div class="button-component" :class="{ badge }" :style="style">
+  <div class="button-component" :class="{ badge, loading }" :style="style">
     <slot />
     <div v-if="badge" class="status-badge" />
   </div>
@@ -32,6 +32,10 @@ export default {
       type: String,
       default: '200%',
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     style() {
@@ -39,6 +43,7 @@ export default {
         '--button-width': `${this.width * 2}rem`,
         '--button-height': `${this.height * 2}rem`,
         'fontSize': this.size,
+        '--badge-color': 'currentColor',
         'background': this.background,
         'color': this.color,
         '--badge-position': `${this.height <= 2 ? 0.5 : 1}rem`,
@@ -74,6 +79,26 @@ export default {
     right: var(--badge-position);
     background: var(--color-black);
     background: currentColor;
+    box-shadow: 0 0 0 0 var(--badge-color);
+  }
+
+  &.loading {
+    .status-badge {
+      &:before,
+      &:after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        box-shadow: 0 0 0 0 var(--badge-color);
+        animation: radiating 3s infinite linear;
+        animation-delay: 0.5s;
+        opacity: 0.2;
+      }
+      &:after {
+        animation-delay: 1s;
+      }
+    }
   }
 
   span {
@@ -133,6 +158,12 @@ export default {
   100% {
     transform: scale(50) rotate(45deg);
     opacity: 0;
+  }
+}
+
+@keyframes radiating {
+  100% {
+    box-shadow: 0 0 0 40px #0000;
   }
 }
 

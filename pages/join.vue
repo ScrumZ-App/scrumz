@@ -1,12 +1,13 @@
 <template>
   <Bento name="join" :areas="['logo', 'roomNameInput', 'join']" :columns="[35]">
-    <To href="/"><Logo /></To>
+    <NuxtLink to="/"><Logo /></NuxtLink>
     <Card class="room-name-input" height="10" width="35">
       <template #title></template>
       <template #icon>
         <SuggestiveInput
           v-model="adjective"
           :list="adjectives"
+          :disabled="isLoading"
           placeholder="masmavi"
           persistent-focus
           @enter="selectAdjective"
@@ -16,13 +17,14 @@
           ref="name"
           v-model="name"
           :list="names"
+          :disabled="isLoading"
           placeholder="deniz"
           @enter="join"
         />
       </template>
     </Card>
     <div class="join-button">
-      <Press badge @click="join">
+      <Press :loading="isLoading" badge @click="join">
         <span> join room </span>
       </Press>
     </div>
@@ -34,17 +36,22 @@
 import { adjectives, names } from '~/config'
 import type SuggestiveInput from '~/components/SuggestiveInput.vue'
 export default defineComponent({
-  data() {
+  data(): {
+    isLoading: boolean
+    adjective: string
+    name: string
+  } {
     return {
+      isLoading: false,
       adjective: '',
       name: '',
     }
   },
   computed: {
-    adjectives() {
+    adjectives(): string[] {
       return adjectives
     },
-    names() {
+    names(): string[] {
       return names
     },
   },
@@ -56,19 +63,22 @@ export default defineComponent({
       name?.focus()
     },
     async join({ suggestion }: { suggestion: string }) {
-      // await new Promise((resolve) => setTimeout(resolve, 100))
       if (!this.adjective || !this.name) return
+      this.isLoading = true
       // fill out the suggestion if it's not filled
       if (suggestion) this.name = suggestion
       // check room exists
       const exists = await this.$scrumz.roomExists(
         `${this.adjective}-${this.name}`
       )
+      const nameInput = this.$refs.name as HTMLInputElement
+      nameInput?.focus()
+      this.isLoading = false
       if (!exists) {
         this.$toast.error('room does not exist')
         return
       }
-      this.$to(`/room/${this.adjective}-${this.name}`)
+      this.$router.push(`/room/${this.adjective}-${this.name}`)
     },
   },
 })

@@ -4,6 +4,9 @@
       ref="input"
       type="text"
       v-model="query"
+      autofocus
+      pattern="[a-z]*"
+      :disabled="disabled"
       @blur="onBlur"
       @keydown.enter="
         $emit('enter', {
@@ -12,7 +15,7 @@
           suggestion: querySuggestions[0],
         })
       "
-      autofocus
+      @input="filterInput"
     />
     <span v-if="query.length && querySuggestions.length">{{
       querySuggestions[0]
@@ -22,8 +25,15 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+export default defineComponent({
+  data(): {
+    querySuggestions: string[]
+  } {
+    return {
+      querySuggestions: [],
+    }
+  },
   props: {
     modelValue: {
       type: String,
@@ -34,10 +44,14 @@ export default {
       default: '',
     },
     list: {
-      type: Array,
+      type: Array as PropType<string[]>,
       default: () => [],
     },
     persistentFocus: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
       type: Boolean,
       default: false,
     },
@@ -45,41 +59,49 @@ export default {
   emits: ['update:modelValue', 'enter'],
   computed: {
     query: {
-      get() {
+      get(): string {
         return this.modelValue
       },
-      set(value) {
+      set(value: string): void {
         this.$emit('update:modelValue', value)
       },
-    },
-    querySuggestions() {
-      const suggestions = this.list
-        .split(',')
-        .filter((item) => item.startsWith(this.query))
-      if (suggestions.includes(this.query)) {
-        return [this.query]
-      }
-      // randomize the suggestions
-      return suggestions.sort(() => Math.random() - 0.5)
     },
   },
   mounted() {
     if (this.persistentFocus) {
-      this.$refs.input?.focus()
+      const input = this.$refs.input as HTMLInputElement
+      input?.focus()
     }
   },
   methods: {
-    focus() {
-      this.$refs.input?.focus()
+    focus(): void {
+      const input = this.$refs.input as HTMLInputElement
+      input?.focus()
     },
-    onBlur() {
+    onBlur(): void {
       if (this.persistentFocus && !this.query) {
-        this.$refs.input?.focus()
+        const input = this.$refs.input as HTMLInputElement
+        input?.focus()
       }
-      this.query = this.query.length ? this.querySuggestions[0] ?? '' : ''
+      this.query = this.query.length ? (this.querySuggestions[0] ?? '') : ''
+    },
+    updateSuggestions(query: string): void {
+      const suggestions = this.list.filter((item) => item.startsWith(query))
+      if (suggestions.includes(query)) {
+        this.querySuggestions = [query]
+        return
+      }
+      // randomize the suggestions
+      this.querySuggestions = suggestions.sort(() => Math.random() - 0.5)
+    },
+    filterInput(): void {
+      // Use a regular expression to remove non-letter characters
+      const newQuery = this.query.replace(/[^a-z]/g, '')
+      if (newQuery === this.query) this.updateSuggestions(newQuery)
+      this.query = newQuery
     },
   },
-}
+})
 </script>
 
 <style lang="scss">
@@ -103,6 +125,11 @@ export default {
     z-index: 1;
     &:focus {
       outline: none;
+    }
+    &:disabled {
+      cursor: not-allowed;
+      /* make color red */
+      opacity: 0.4;
     }
   }
   span {

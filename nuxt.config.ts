@@ -18,13 +18,20 @@ export default defineNuxtConfig({
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
   },
+
+  typescript: {
+    typeCheck: true,
+  },
+
   nitro: {
     prerender: {
       routes: ['/'],
       failOnError: false,
     },
   },
+
   devtools: { enabled: true },
+
   modules: [
     // ... other modules
     'nuxt-vuefire',
@@ -32,9 +39,11 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@pinia/nuxt',
   ],
+
   pinia: {
     storesDirs: ['./store/**'],
   },
+
   vuefire: {
     auth: {
       enabled: true,
@@ -58,4 +67,6 @@ export default defineNuxtConfig({
       measurementId: 'G-4E7VXM63L5',
     },
   },
+
+  compatibilityDate: '2024-09-13'
 })
