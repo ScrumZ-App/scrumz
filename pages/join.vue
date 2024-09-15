@@ -108,7 +108,7 @@ export default defineComponent({
 
 @media (max-aspect-ratio: 1/1) {
   .join {
-    height: 100vh;
+    height: 100dvh;
     margin-top: 0;
 
     .bento-grid {
@@ -121,6 +121,7 @@ export default defineComponent({
       align-content: space-between;
 
       .room-name-input .icon {
+        font-size: 350%;
         flex-direction: column;
 
         & > span {

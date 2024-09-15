@@ -2,7 +2,7 @@
   <Card
     class="logo"
     :height="4"
-    background="var(--color-primary)"
+    background="var(--color-card-active)"
     color="var(--color-white)"
     custom
   >

@@ -172,7 +172,7 @@ export default defineComponent({
     }
 
     &.most-voted .back-card {
-      box-shadow: inset 0 0 0 0.25rem var(--color-black);
+      box-shadow: inset 0 0 0 0.25rem var(--color-border);
     }
 
     &.voted:not(.most-voted) .back-card {
@@ -211,8 +211,9 @@ export default defineComponent({
 
 @media (max-aspect-ratio: 1/1) {
   .room {
-    height: 100vh;
+    height: 100dvh;
     margin-top: 0;
+
     .bento-grid {
       padding: 2rem;
       min-height: 100%;

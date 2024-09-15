@@ -97,7 +97,7 @@ export default defineComponent({
 
 @media (max-aspect-ratio: 1/1) {
   .name-input {
-    height: 100vh;
+    height: 100dvh;
     margin-top: 0;
 
     .bento-grid {

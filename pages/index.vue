@@ -14,7 +14,11 @@
     <Card class="coffee-card" flip badge>
       <template #title>{{ $t('coffee') }}</template>
       <template #icon>
-        <Image :height="4" :width="4" src="/coffee.svg"
+        <Image
+          :height="4"
+          :width="4"
+          src="/coffee.svg"
+          dark-src="/coffee-dark.svg"
       /></template>
       <template #back>
         <h1>{{ $t('support-us') }}</h1>
@@ -23,7 +27,12 @@
     <Card class="mood-card" :width="17" :height="17">
       <template #title>{{ $t('mood') }}</template>
       <template #icon>
-        <Image :height="15" :width="15" src="/mood.svg" />
+        <Image
+          :height="15"
+          :width="15"
+          src="/mood.svg"
+          dark-src="/mood-dark.svg"
+        />
       </template>
     </Card>
     <Card class="info-card" :height="9" custom>
@@ -47,6 +56,7 @@
         :height="4"
         size="250%"
         background="var(--color-primary)"
+        badge-color="var(--color-badge-active)"
         color="var(--color-white)"
         badge
       >
@@ -72,7 +82,7 @@
     h1 {
       font-size: 150%;
       font-weight: 600;
-      color: var(--color-black);
+      color: var(--color-text);
       text-align: center;
       padding: 1rem;
     }
@@ -109,8 +119,9 @@
 
 @media (max-aspect-ratio: 1/1) {
   .home {
-    height: 100vh;
+    height: 100dvh;
     margin-top: 0;
+
     .bento-grid {
       padding: 2rem;
       min-height: 100%;

@@ -11,7 +11,7 @@
         {{ $t('fibonacci-card.title') }}
       </template>
       <template #icon>
-        <Image :height="7" :width="7" src="/cards/fibonacci.png" />
+        <Image :height="7" :width="7" src="/cards/fibonacci.png" dark />
       </template>
       <template #back>
         <div class="create-card" @click="create('fibonacci')">
@@ -42,7 +42,7 @@
     <Card class="card" flip locked mirror :loading="!user">
       <template #title> {{ $t('t-shirt-card.title') }} </template>
       <template #icon>
-        <Image :height="8" :width="8" src="/cards/t-shirt.png" />
+        <Image :height="8" :width="8" src="/cards/t-shirt.png" dark />
       </template>
       <template #back>
         <div class="create-card" @click="create('t-shirt')">
@@ -67,7 +67,7 @@
     <Card class="card" flip locked mirror :loading="!user">
       <template #title> {{ $t('custom-card.title') }} </template>
       <template #icon>
-        <Image :height="8" :width="8" src="/cards/custom.png" />
+        <Image :height="8" :width="8" src="/cards/custom.png" dark />
       </template>
       <template #back>
         <div class="create-card" @click="create('custom')">
@@ -142,8 +142,9 @@ export default defineComponent({
 
 @media (max-aspect-ratio: 1/1) {
   .create {
-    height: 100vh;
+    height: 100dvh;
     margin-top: 0;
+
     .bento-grid {
       padding: 2rem;
       min-height: 100%;

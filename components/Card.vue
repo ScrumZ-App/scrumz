@@ -50,11 +50,11 @@ export default defineComponent({
     },
     background: {
       type: String,
-      default: 'var(--color-white)',
+      default: 'var(--color-card)',
     },
     color: {
       type: String,
-      default: 'var(--color-black)',
+      default: 'var(--color-text)',
     },
     mirror: {
       type: Boolean,
@@ -108,6 +108,8 @@ export default defineComponent({
     transition: 0.5s transform;
     background: var(--card-background);
     border-radius: var(--border-radius);
+    border: 1px solid #ffffff22;
+    overflow: hidden;
   }
 
   .front,
@@ -121,7 +123,7 @@ export default defineComponent({
       left: 1.5rem;
       font-size: 200%;
       font-weight: 600;
-      color: var(--color-black);
+      color: var(--color-text);
       display: inline-flex;
     }
 
@@ -152,7 +154,7 @@ export default defineComponent({
     .status-badge {
       width: 3rem;
       height: 3rem;
-      background: var(--color-black);
+      background: var(--color-badge);
       border-radius: 50%;
       position: absolute;
       bottom: 1rem;
@@ -162,8 +164,6 @@ export default defineComponent({
 
   &.loading {
     overflow: hidden;
-    border-radius: var(--border-radius);
-    border: 2px solid #e0e0e0;
     pointer-events: none;
 
     .front::before {
@@ -172,7 +172,7 @@ export default defineComponent({
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: #e4e4e4;
+      background-color: var(--color-skeleton);
       position: absolute;
       overflow: hidden;
       z-index: 2;
@@ -184,12 +184,7 @@ export default defineComponent({
       left: -100%;
       height: 100%;
       width: 100%;
-      background: linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0) 0%,
-        rgba(255, 255, 255, 0.4) 50%,
-        rgba(255, 255, 255, 0) 100%
-      );
+      background: var(--loading-gradient);
       animation: shine 1.5s infinite;
       z-index: 3;
     }

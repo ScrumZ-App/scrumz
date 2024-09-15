@@ -46,8 +46,21 @@ export default defineComponent({
   --color-primary: #ff3e6c;
   --color-white: #fff;
   --color-black: #030047;
+  --color-skeleton: #e4e4e4;
   --color-faded: #9b9ab8;
   --border-radius: 2rem;
+  --color-text: var(--color-black);
+  --color-card: var(--color-white);
+  --color-card-active: var(--color-primary);
+  --color-badge: var(--color-black);
+  --color-badge-active: var(--color-white);
+  --color-border: var(--color-black);
+  --loading-gradient: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
 }
 
 * {
@@ -70,6 +83,29 @@ html {
 @media (max-aspect-ratio: 1/1) {
   html {
     font-size: 2vh;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #1a1a1a;
+    --color-primary: #ff3e6c;
+    --color-white: #fff;
+    --color-black: #030047;
+    --color-skeleton: #2f2f2f;
+    --color-faded: #9b9ab8;
+    --color-text: var(--color-white);
+    --color-card: #1f1f1f;
+    --color-card-active: #1f1f1f;
+    --color-badge: var(--color-primary);
+    --color-badge-active: #1f1f1f;
+    --color-border: var(--color-white);
+    --loading-gradient: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
   }
 }
 
@@ -116,7 +152,7 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100dvh;
 
   & svg {
     width: 10rem;

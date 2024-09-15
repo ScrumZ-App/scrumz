@@ -115,7 +115,7 @@ export default defineComponent({
   position: relative;
 
   .avatar {
-    border: 0.2rem solid white;
+    border: 0.2rem solid var(--color-card);
     border-radius: 50%;
     margin-right: -1.5rem;
     width: calc(3rem + 0.4rem);
@@ -142,7 +142,7 @@ export default defineComponent({
     height: calc(3rem + 0.4rem);
     border-radius: 50%;
     background-color: var(--color-background);
-    color: #000;
+    color: var(--color-text);
     cursor: pointer;
     font-size: 100%;
   }
@@ -150,7 +150,7 @@ export default defineComponent({
 
 .popover {
   position: absolute;
-  background-color: #fff;
+  background-color: var(--color-card);
   box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
   padding: 1rem;
   border-radius: var(--border-radius);

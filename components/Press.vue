@@ -18,11 +18,11 @@ export default defineComponent({
     },
     background: {
       type: String,
-      default: 'var(--color-white)',
+      default: 'var(--color-card)',
     },
     color: {
       type: String,
-      default: 'var(--color-black)',
+      default: 'var(--color-text)',
     },
     badge: {
       type: Boolean,
@@ -36,6 +36,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    badgeColor: {
+      type: String,
+      default: 'var(--color-badge)',
+    },
   },
   computed: {
     style() {
@@ -43,7 +47,7 @@ export default defineComponent({
         '--button-width': `${this.width * 2}rem`,
         '--button-height': `${this.height * 2}rem`,
         'fontSize': this.size,
-        '--badge-color': 'currentColor',
+        '--badge-color': this.badgeColor,
         'background': this.background,
         'color': this.color,
         '--badge-position': `${this.height <= 2 ? 0.5 : 1}rem`,
@@ -69,6 +73,7 @@ export default defineComponent({
   position: relative;
   overflow: hidden;
   padding: 0 0 0.3rem 2rem;
+  box-shadow: inset 0 0 0 1px #fff2;
 
   .status-badge {
     width: 3rem;
@@ -77,8 +82,7 @@ export default defineComponent({
     position: absolute;
     bottom: var(--badge-position);
     right: var(--badge-position);
-    background: var(--color-black);
-    background: currentColor;
+    background: var(--badge-color);
     box-shadow: 0 0 0 0 var(--badge-color);
   }
 
