@@ -8,7 +8,7 @@
           v-model="adjective"
           :list="adjectives"
           :disabled="isLoading"
-          placeholder="masmavi"
+          :placeholder="adjectives[0]"
           persistent-focus
           @enter="selectAdjective"
         />
@@ -18,14 +18,14 @@
           v-model="name"
           :list="names"
           :disabled="isLoading"
-          placeholder="deniz"
+          :placeholder="names[0]"
           @enter="join"
         />
       </template>
     </Card>
     <div class="join-button">
       <Press :loading="isLoading" badge @click="join">
-        <span> join room </span>
+        <span> {{ $t('join-room') }} </span>
       </Press>
     </div>
     <Spacer class="spacer" />
@@ -49,10 +49,10 @@ export default defineComponent({
   },
   computed: {
     adjectives(): string[] {
-      return adjectives
+      return adjectives['tr-TR']
     },
     names(): string[] {
-      return names
+      return names['tr-TR']
     },
   },
   methods: {
@@ -75,10 +75,10 @@ export default defineComponent({
       nameInput?.focus()
       this.isLoading = false
       if (!exists) {
-        this.$toast.error('room does not exist')
+        this.$toast.error(this.$t('room-not-found'))
         return
       }
-      this.$router.push(`/room/${this.adjective}-${this.name}`)
+      this.$router.push(`/${this.adjective}-${this.name}`)
     },
   },
 })

@@ -1,4 +1,15 @@
 {
-  "cSpell.words": ["Afacad", "Pinia", "qrcode", "scrumz", "todos", "vuefire"],
-  "i18n-ally.localesPaths": []
+  "cSpell.words": [
+    "Afacad",
+    "appspot",
+    "firebaseapp",
+    "Konami",
+    "Pinia",
+    "qrcode",
+    "scrumz",
+    "todos",
+    "vuefire"
+  ],
+  "i18n-ally.localesPaths": ["lang"],
+  "i18n-ally.keystyle": "nested"
 }

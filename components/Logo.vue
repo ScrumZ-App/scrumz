@@ -7,7 +7,7 @@
     custom
   >
     <template #front>
-      <span>scrumz</span>
+      <span>{{ $t('scrumz') }}</span>
     </template>
   </Card>
 </template>

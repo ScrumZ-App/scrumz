@@ -1,5 +1,6 @@
 <template>
   <NuxtLayout name="default">
+    <KonamiCode @activate="debug = $event" />
     <NuxtPage />
   </NuxtLayout>
 </template>
@@ -11,14 +12,17 @@ import 'vue-toast-notification/dist/theme-sugar.css'
 export default defineComponent({
   provide() {
     return {
-      user: this.user,
+      user: computed(() => this.user),
+      debug: computed(() => this.debug),
     }
   },
   data(): {
     user: any
+    debug: boolean
   } {
     return {
       user: null,
+      debug: false,
     }
   },
   async beforeMount() {
@@ -97,5 +101,26 @@ a {
   text-decoration: none;
   color: inherit;
   cursor: pointer;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  & svg {
+    width: 10rem;
+    animation: rotate 3s linear infinite;
+  }
 }
 </style>

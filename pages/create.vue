@@ -6,18 +6,26 @@
     :height="12"
   >
     <NuxtLink to="/"><Logo /></NuxtLink>
-    <Card class="card" flip locked mirror>
-      <template #title> fibonacci </template>
+    <Card class="card" flip locked mirror :loading="!user">
+      <template #title>
+        {{ $t('fibonacci-card.title') }}
+      </template>
       <template #icon>
         <Image :height="7" :width="7" src="/cards/fibonacci.png" />
       </template>
       <template #back>
         <div class="create-card" @click="create('fibonacci')">
-          <h1>fibonacci</h1>
+          <h1>{{ $t('fibonacci-card.title') }}</h1>
           <ul>
-            <li>great for estimating</li>
-            <li>sequence of numbers</li>
-            <li>each number is the sum of the two preceding ones</li>
+            <li>{{ $t('fibonacci-card.great-for-estimating') }}</li>
+            <li>{{ $t('fibonacci-card.sequence-of-numbers') }}</li>
+            <li>
+              {{
+                $t(
+                  'fibonacci-card.each-number-is-the-sum-of-the-two-preceding-ones'
+                )
+              }}
+            </li>
           </ul>
           <Press
             :width="6"
@@ -26,23 +34,23 @@
             background="var(--color-primary)"
             color="var(--color-white)"
           >
-            use this template
+            {{ $t('use-this-template') }}
           </Press>
         </div>
       </template>
     </Card>
-    <Card class="card" flip locked mirror>
-      <template #title> t-shirt </template>
+    <Card class="card" flip locked mirror :loading="!user">
+      <template #title> {{ $t('t-shirt-card.title') }} </template>
       <template #icon>
         <Image :height="8" :width="8" src="/cards/t-shirt.png" />
       </template>
       <template #back>
         <div class="create-card" @click="create('t-shirt')">
-          <h1>t-shirt</h1>
+          <h1>{{ $t('t-shirt-card.title') }}</h1>
           <ul>
-            <li>great for sizing</li>
-            <li>sequence of sizes</li>
-            <li>each size is a t-shirt size</li>
+            <li>{{ $t('t-shirt-card.great-for-sizing') }}</li>
+            <li>{{ $t('t-shirt-card.sequence-of-sizes') }}</li>
+            <li>{{ $t('t-shirt-card.each-size-is-a-t-shirt-size') }}</li>
           </ul>
           <Press
             :width="6"
@@ -51,23 +59,23 @@
             background="var(--color-primary)"
             color="var(--color-white)"
           >
-            use this template
+            {{ $t('use-this-template') }}
           </Press>
         </div>
       </template>
     </Card>
-    <Card class="card" flip locked mirror>
-      <template #title> custom </template>
+    <Card class="card" flip locked mirror :loading="!user">
+      <template #title> {{ $t('custom-card.title') }} </template>
       <template #icon>
         <Image :height="8" :width="8" src="/cards/custom.png" />
       </template>
       <template #back>
         <div class="create-card" @click="create('custom')">
-          <h1>custom</h1>
+          <h1>{{ $t('custom-card.title') }}</h1>
           <ul>
-            <li>you are the creator</li>
-            <li>create your own template</li>
-            <li>customize your own deck</li>
+            <li>{{ $t('custom-card.you-are-the-creator') }}</li>
+            <li>{{ $t('custom-card.create-your-own-template') }}</li>
+            <li>{{ $t('custom-card.customize-your-own-deck') }}</li>
           </ul>
           <Press
             :width="6"
@@ -76,7 +84,7 @@
             background="var(--color-primary)"
             color="var(--color-white)"
           >
-            use this template
+            {{ $t('use-this-template') }}
           </Press>
         </div>
       </template>
@@ -101,7 +109,7 @@ export default defineComponent({
       })
 
       // go room page
-      this.$router.push(`/room/${roomName}`)
+      this.$router.push(`/${roomName}`)
     },
   },
 })

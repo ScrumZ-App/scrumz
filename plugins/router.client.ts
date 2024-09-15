@@ -16,6 +16,7 @@ declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     readonly $route: RouteLocationNormalizedGeneric
     readonly $router: Router
+    readonly $t: Function
   }
 }
 

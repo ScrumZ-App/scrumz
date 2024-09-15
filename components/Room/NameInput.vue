@@ -2,7 +2,7 @@
   <Bento
     v-if="user"
     name="name-input"
-    :areas="['logo', 'userNameInput']"
+    :areas="['logo', 'userNameInput', 'changeButton']"
     :columns="[35]"
     :height="17"
   >
@@ -18,21 +18,21 @@
         />
       </template>
     </Card>
+    <div class="change-button">
+      <Press :loading="isLoading" badge @click="selectName">
+        <span> {{ $t('change-name') }} </span>
+      </Press>
+    </div>
   </Bento>
 </template>
 
 <script lang="ts">
 import { ref as dbRef, update } from 'firebase/database'
 
-export interface User {
-  uid: string
-  name: string
-  role: string
-}
-
 export default defineComponent({
   data() {
     return {
+      isLoading: false,
       name: '',
     }
   },
@@ -49,6 +49,8 @@ export default defineComponent({
   emits: ['set'],
   methods: {
     async selectName() {
+      if (!this.roomId || !this.user.uid) return
+      this.isLoading = true
       const userRef = dbRef(
         useDatabase(),
         'rooms/' + this.roomId + '/users/' + this.user.uid
@@ -56,6 +58,7 @@ export default defineComponent({
       await update(userRef, {
         name: this.name,
       })
+      this.isLoading = false
       this.$emit('set', this.name)
     },
   },
@@ -75,6 +78,11 @@ export default defineComponent({
 
   .user-name-input {
     grid-area: userNameInput;
+  }
+  .change-button {
+    grid-area: changeButton;
+    display: flex;
+    justify-content: end;
   }
   .spacer {
     grid-area: spacer;
@@ -96,13 +104,17 @@ export default defineComponent({
       padding: 2rem;
       min-height: 100%;
       overflow: scroll;
-      grid-template-areas: 'logo' 'spacer' 'userNameInput';
+      grid-template-areas: 'logo' 'spacer' 'userNameInput' 'changeButton';
       grid-template-columns: 100%;
       grid-template-rows: 8rem 1fr 20rem;
       align-content: space-between;
 
       .user-name-input .icon {
         flex-direction: column;
+
+        input {
+          font-size: 60%;
+        }
 
         & > span {
           line-height: 1rem;

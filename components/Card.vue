@@ -1,7 +1,7 @@
 <template>
   <div
     class="card-component"
-    :class="{ 'has-back': back, flip, custom, badge }"
+    :class="{ 'has-back': back, flip, custom, badge, loading }"
     :style="style"
   >
     <div v-if="custom" class="front"><slot name="front" /></div>
@@ -64,6 +64,10 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    loading: {
+      type: Boolean,
+      default: false,
+    },
   },
   computed: {
     style() {
@@ -79,6 +83,15 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
 .card-component {
   width: var(--card-width);
   height: var(--card-height);
@@ -147,6 +160,41 @@ export default defineComponent({
     }
   }
 
+  &.loading {
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    border: 2px solid #e0e0e0;
+    pointer-events: none;
+
+    .front::before {
+      content: '';
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #e4e4e4;
+      position: absolute;
+      overflow: hidden;
+      z-index: 2;
+    }
+    .front::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0) 100%
+      );
+      animation: shine 1.5s infinite;
+      z-index: 3;
+    }
+  }
+
   &.has-back {
     .front {
       transform: perspective(64rem) rotateY(180deg);
@@ -157,7 +205,7 @@ export default defineComponent({
   }
 
   &.flip {
-    &:hover {
+    &:not(.loading):hover {
       .front {
         transform: perspective(64rem) rotateY(180deg);
       }

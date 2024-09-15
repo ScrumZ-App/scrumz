@@ -61,32 +61,28 @@ export default defineComponent({
   data(): {
     maxAvatars: number
     cursor: { x: number; y: number }
-    displayedAvatars: string[]
-    remainingAvatars: string[]
     isPopoverVisible: boolean
     hoveredAvatarIndex: number
   } {
     return {
       maxAvatars,
       cursor: { x: 0, y: 0 },
-      displayedAvatars: [],
-      remainingAvatars: [],
       isPopoverVisible: false,
       hoveredAvatarIndex: -1,
     }
   },
   computed: {
     displayedAvatars(): string[] {
-      if (this.avatars.length <= maxAvatars) {
+      if (this.avatars.length <= this.maxAvatars) {
         return this.avatars
       }
-      return this.avatars.slice(0, maxAvatars - 1)
+      return this.avatars.slice(0, this.maxAvatars - 1)
     },
     remainingAvatars(): string[] {
-      if (this.avatars.length <= maxAvatars) {
+      if (this.avatars.length <= this.maxAvatars) {
         return []
       }
-      return this.avatars.slice(maxAvatars - 1)
+      return this.avatars.slice(this.maxAvatars - 1)
     },
   },
   methods: {

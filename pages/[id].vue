@@ -1,5 +1,9 @@
 <template>
-  <template v-if="loading"></template>
+  <template v-if="loading">
+    <div class="loading">
+      <Avatar :name="randomLoader" :size="128" />
+    </div>
+  </template>
   <RoomNameInput
     v-else-if="user && (!user.name || showUserInput)"
     :room-id="roomId"
@@ -21,7 +25,7 @@
     :room-id="roomId"
     @changeName="() => (showUserInput = true)"
   />
-  <!-- <DebugCode>
+  <DebugCode v-if="debug">
     <span>Loading: {{ loading }}</span>
     <span>Room ID: {{ roomId }}</span>
     <span>User: {{ user?.uid }}</span>
@@ -29,32 +33,16 @@
     <span>Raw Room Info:</span>
     <span>{{ JSON.stringify(room, null, 2) }}</span>
   </DebugCode>
-
-  <CopyUrl />
-  <CurrentURLQrCode /> -->
 </template>
 
 <script lang="ts">
 import { ref as dbRef } from 'firebase/database'
 import type RoomCards from '~/components/Room/Cards.vue'
 
-export interface Room {
-  createdBy: string
-  version: number
-  isOpened: boolean
-  options: { position: number; value: string }[]
-  users: { [key: string]: { name: string; role: string } }
-  voteVersions: { [key: number]: { user: string; option: number }[] }
-}
-
-export interface User {
-  uid: string
-  name: string
-  role: string
-}
-
 export default defineComponent({
   data(): {
+    randomLoader: string
+    debug?: boolean
     parentUser: any
     loading: boolean
     roomId: string
@@ -63,6 +51,8 @@ export default defineComponent({
     showUserInput: boolean
   } {
     return {
+      randomLoader: Math.random().toString(36).substring(2, 7),
+      debug: inject('debug'),
       parentUser: inject('user'),
       loading: true,
       roomId: '',
@@ -74,14 +64,16 @@ export default defineComponent({
   async mounted() {
     if (typeof this.$route.params.id === 'string')
       this.roomId = this.$route.params.id
-    this.user = {
-      uid: this.parentUser.uid,
-      name: '',
-      role: 'developer',
-    }
     this.room = (await useDatabaseObject(
       dbRef(useDatabase(), 'rooms/' + this.roomId)
     )) as unknown as Room | null
+    if (this.parentUser) {
+      this.user = {
+        uid: this.parentUser.uid,
+        name: '',
+        role: 'developer',
+      }
+    }
   },
   watch: {
     room: {
@@ -96,6 +88,17 @@ export default defineComponent({
       handler: function (val) {
         if (!val.id) return
         this.checkIfLoaded()
+      },
+      deep: true,
+    },
+    parentUser: {
+      handler: function (val) {
+        if (!val) return
+        this.user = {
+          uid: val.uid,
+          name: '',
+          role: 'developer',
+        }
       },
       deep: true,
     },

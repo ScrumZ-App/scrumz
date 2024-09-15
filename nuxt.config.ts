@@ -9,7 +9,7 @@ if (process.env.NODE_ENV !== 'production') {
     console.log('Debug token:', token)
   } catch (e) {
     // read debug-token.json
-    throw new Error('Missing debug token')
+    throw new Error('Missing debug-token.json')
   }
 }
 
@@ -43,6 +43,21 @@ export default defineNuxtConfig({
 
   pinia: {
     storesDirs: ['./store/**'],
+  },
+
+  i18n: {
+    locales: [
+      { code: 'en', language: 'en-US', file: 'en.json' },
+      { code: 'tr', language: 'tr-TR', file: 'tr.json' },
+    ],
+    defaultLocale: 'en',
+    langDir: 'lang/',
+    strategy: 'prefix_and_default',
+    detectBrowserLanguage: {
+      useCookie: true,
+      cookieKey: 'i18n_redirected',
+      alwaysRedirect: true,
+    },
   },
 
   vuefire: {

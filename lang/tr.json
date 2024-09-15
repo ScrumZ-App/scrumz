@@ -1,0 +1,33 @@
+{
+  "scrumz": "scrumz",
+  "coffee": "kahve",
+  "support-us": "Lütfen bizi destekleyin 🥺",
+  "mood": "mood",
+  "join-room": "odaya katıl",
+  "create-room": "oda oluştur",
+  "change-name": "değiştir",
+  "info-card": {
+    "what-is-scrumz": "scrumz.app, hikaye puanı tahmini için ekip arkadaşlarınızla bir araya gelmeniz için geliştirildi.",
+    "what-is-scrum-poker": "scrum poker'in sunduğu eğlenceli ve esnek yapı ile birlikte çalışın ve projelerinizde başarıya ulaşın."
+  },
+  "fibonacci-card": {
+    "title": "fibonacci",
+    "great-for-estimating": "tahminlemek için harika",
+    "sequence-of-numbers": "artan sayı dizisi",
+    "each-number-is-the-sum-of-the-two-preceding-ones": "her sayı kendinden önceki iki sayının toplamıdır"
+  },
+  "t-shirt-card": {
+    "title": "t-shirt",
+    "great-for-sizing": "boyutlandırma için harika",
+    "sequence-of-sizes": "beden ölçüsü dizisi",
+    "each-size-is-a-t-shirt-size": "her boyut t-shirt beden ölçüsü"
+  },
+  "custom-card": {
+    "title": "özel",
+    "you-are-the-creator": "senin yaratıcılığın",
+    "create-your-own-template": "kendi şablonunu oluştur",
+    "customize-your-own-deck": "kartları kişiselleştir"
+  },
+  "use-this-template": "bu şablonu kullan",
+  "room-not-found": "Oda bulunamadı"
+}

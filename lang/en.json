@@ -1,0 +1,33 @@
+{
+  "scrumz": "scrumz",
+  "coffee": "coffee",
+  "support-us": "Please Support Us 🥺",
+  "mood": "mood",
+  "join-room": "join room",
+  "create-room": "create room",
+  "change-name": "change",
+  "info-card": {
+    "what-is-scrumz": "scrumz.app was developed for you to gather with your team members for story point estimation.",
+    "what-is-scrum-poker": "work together and achieve success in your projects with our fun and flexible structure provided by scrum poker."
+  },
+  "fibonacci-card": {
+    "title": "fibonacci",
+    "great-for-estimating": "great for estimating",
+    "sequence-of-numbers": "sequence of numbers",
+    "each-number-is-the-sum-of-the-two-preceding-ones": "each number is the sum of the two preceding ones"
+  },
+  "t-shirt-card": {
+    "title": "t-shirt",
+    "great-for-sizing": "great for sizing",
+    "sequence-of-sizes": "sequence of sizes",
+    "each-size-is-a-t-shirt-size": "each size is a t-shirt size"
+  },
+  "custom-card": {
+    "title": "custom",
+    "you-are-the-creator": "you are the creator",
+    "create-your-own-template": "create your own template",
+    "customize-your-own-deck": "customize your own deck"
+  },
+  "use-this-template": "use this template",
+  "room-not-found": "Room not found"
+}

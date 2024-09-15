@@ -1,14 +1,8 @@
 import { ref as dbRef, push, update, get } from 'firebase/database'
 
-interface OptionType {
-  position: number
-  value: string
-  isEmpty?: boolean
-}
-
 import { adjectives, names } from '~/config'
 
-const defaultRooms: { [key: string]: OptionType[] } = {
+const defaultRooms: { [key: string]: Option[] } = {
   'fibonacci': [
     { position: 1, value: '1' },
     { position: 2, value: '2' },
@@ -44,8 +38,8 @@ const defaultRooms: { [key: string]: OptionType[] } = {
 
 const scrumz = {
   createNewId: function (): string {
-    const namesArr = names
-    const adjectivesArr = adjectives
+    const namesArr = names['tr-TR']
+    const adjectivesArr = adjectives['tr-TR']
     return (
       adjectivesArr[Math.floor(Math.random() * adjectivesArr.length)] +
       '-' +
@@ -63,7 +57,7 @@ const scrumz = {
   createRoom: async function (options: {
     uid: string
     type: string
-    customOptions?: OptionType[]
+    customOptions?: Option[]
   }): Promise<string> {
     const { uid, type, customOptions } = options
     const newId = this.createNewId()

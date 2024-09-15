@@ -12,16 +12,16 @@
   >
     <Logo />
     <Card class="coffee-card" flip badge>
-      <template #title>coffee</template>
+      <template #title>{{ $t('coffee') }}</template>
       <template #icon>
         <Image :height="4" :width="4" src="/coffee.svg"
       /></template>
       <template #back>
-        <h1>Please Support Us 🥺</h1>
+        <h1>{{ $t('support-us') }}</h1>
       </template>
     </Card>
     <Card class="mood-card" :width="17" :height="17">
-      <template #title>mood</template>
+      <template #title>{{ $t('mood') }}</template>
       <template #icon>
         <Image :height="15" :width="15" src="/mood.svg" />
       </template>
@@ -29,18 +29,16 @@
     <Card class="info-card" :height="9" custom>
       <template #front>
         <span>
-          scrumz.app was developed for you to gather with your team members for
-          story point estimation.
+          {{ $t('info-card.what-is-scrumz') }}
         </span>
         <span>
-          work together and achieve success in your projects with our fun and
-          flexible structure provided by scrum poker.
+          {{ $t('info-card.what-is-scrum-poker') }}
         </span>
       </template>
     </Card>
     <NuxtLink to="/join">
       <Press class="join-button" badge>
-        <span> join room </span>
+        <span> {{ $t('join-room') }} </span>
       </Press>
     </NuxtLink>
     <NuxtLink to="/create">
@@ -52,7 +50,7 @@
         color="var(--color-white)"
         badge
       >
-        <span style="width: 0px"> create room </span>
+        <span style="width: 0px"> {{ $t('create-room') }} </span>
       </Press>
     </NuxtLink>
     <Spacer class="spacer" />

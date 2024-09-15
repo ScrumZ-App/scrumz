@@ -126,6 +126,12 @@ export default defineComponent({
   }
 }
 
+@keyframes radiating {
+  100% {
+    box-shadow: 0 0 0 40px #0000;
+  }
+}
+
 @keyframes bounce {
   0% {
     transform: scale(1);
@@ -158,12 +164,6 @@ export default defineComponent({
   100% {
     transform: scale(50) rotate(45deg);
     opacity: 0;
-  }
-}
-
-@keyframes radiating {
-  100% {
-    box-shadow: 0 0 0 40px #0000;
   }
 }
 
