@@ -4,9 +4,9 @@
     name="room"
     :areas="['logo card']"
     :columns="[6, 6, 6, 6, 6]"
-    height="17"
+    :height="17"
   >
-    <Card class="logo-card" flip width="6" height="8">
+    <Card class="logo-card" flip :width="6" :height="8">
       <template #icon>
         <div>
           <span>scrumz</span>
@@ -36,8 +36,8 @@
       mirror
       :back="room.isOpened"
       back-title
-      width="6"
-      height="8"
+      :width="6"
+      :height="8"
       @click="voteToCard(option)"
     >
       <template #title> {{ option.value }} </template>

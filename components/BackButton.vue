@@ -2,10 +2,6 @@
   <NuxtLink to="/" class="back-button-component"></NuxtLink>
 </template>
 
-<script>
-export default {}
-</script>
-
 <style lang="scss">
 .back-button-component {
   display: inline-flex;

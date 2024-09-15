@@ -1,6 +1,5 @@
 <template>
   <div class="avatar-group">
-    <!-- {{ displayedAvatars }} -->
     <div
       v-for="(avatar, index) in displayedAvatars"
       :key="index"
@@ -15,7 +14,7 @@
     <div
       v-if="remainingAvatars.length"
       class="avatar more-avatars"
-      @mouseover="showPopover('more')"
+      @mouseover="showPopover(maxAvatars + 1)"
       @mouseleave="hidePopover"
     >
       +{{ remainingAvatars.length }}
@@ -31,7 +30,7 @@
           left: `${cursor.x}px`,
         }"
       >
-        <div v-if="hoveredAvatarIndex === 'more'">
+        <div v-if="hoveredAvatarIndex === maxAvatars + 1">
           <ul>
             <li v-for="(avatar, index) in remainingAvatars" :key="index">
               <Avatar :name="avatar" />
@@ -49,47 +48,57 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+const maxAvatars = 3
+
+export default defineComponent({
   props: {
     avatars: {
-      type: Array,
+      type: Array as PropType<string[]>,
       required: true,
     },
   },
-  data() {
+  data(): {
+    maxAvatars: number
+    cursor: { x: number; y: number }
+    displayedAvatars: string[]
+    remainingAvatars: string[]
+    isPopoverVisible: boolean
+    hoveredAvatarIndex: number
+  } {
     return {
+      maxAvatars,
       cursor: { x: 0, y: 0 },
       displayedAvatars: [],
       remainingAvatars: [],
       isPopoverVisible: false,
-      hoveredAvatarIndex: null,
+      hoveredAvatarIndex: -1,
     }
   },
   computed: {
-    displayedAvatars() {
-      if (this.avatars.length <= 3) {
+    displayedAvatars(): string[] {
+      if (this.avatars.length <= maxAvatars) {
         return this.avatars
       }
-      return this.avatars.slice(0, 2)
+      return this.avatars.slice(0, maxAvatars - 1)
     },
-    remainingAvatars() {
-      if (this.avatars.length <= 3) {
+    remainingAvatars(): string[] {
+      if (this.avatars.length <= maxAvatars) {
         return []
       }
-      return this.avatars.slice(2)
+      return this.avatars.slice(maxAvatars - 1)
     },
   },
   methods: {
-    showPopover(index) {
+    showPopover(index: number) {
       this.hoveredAvatarIndex = index
       this.isPopoverVisible = true
     },
     hidePopover() {
       this.isPopoverVisible = false
-      this.hoveredAvatarIndex = null
+      this.hoveredAvatarIndex = -1
     },
-    onMouseMove(event) {
+    onMouseMove(event: MouseEvent) {
       this.cursor = { x: event.clientX, y: event.clientY }
     },
   },
@@ -100,7 +109,7 @@ export default {
   beforeUnmount() {
     document.removeEventListener('mousemove', this.onMouseMove)
   },
-}
+})
 </script>
 
 <style lang="scss">

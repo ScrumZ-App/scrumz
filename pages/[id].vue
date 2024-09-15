@@ -72,8 +72,8 @@ export default defineComponent({
     }
   },
   async mounted() {
-    this.roomId =
-      typeof this.$route.params.id === 'string' ? this.$route.params.id : ''
+    if (typeof this.$route.params.id === 'string')
+      this.roomId = this.$route.params.id
     this.user = {
       uid: this.parentUser.uid,
       name: '',

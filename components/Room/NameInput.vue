@@ -4,10 +4,10 @@
     name="name-input"
     :areas="['logo', 'userNameInput']"
     :columns="[35]"
-    height="17"
+    :height="17"
   >
     <NuxtLink to="/"><Logo /></NuxtLink>
-    <Card class="user-name-input" height="10" width="35">
+    <Card class="user-name-input" :height="10" :width="35">
       <template #title></template>
       <template #icon>
         <TextInput

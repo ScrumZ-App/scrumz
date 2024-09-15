@@ -63,7 +63,7 @@ const scrumz = {
   createRoom: async function (options: {
     uid: string
     type: string
-    customOptions: OptionType[]
+    customOptions?: OptionType[]
   }): Promise<string> {
     const { uid, type, customOptions } = options
     const newId = this.createNewId()
@@ -72,7 +72,7 @@ const scrumz = {
     await update(roomRef, {
       createdBy: uid,
       isOpened: false,
-      options: defaultRooms[type] || customOptions,
+      options: defaultRooms[type] || customOptions || [],
       users: {
         [uid]: {
           name: '',

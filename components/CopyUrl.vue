@@ -4,14 +4,15 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+export default defineComponent({
   methods: {
     copyToClipboard() {
       if (typeof window !== 'undefined') return
-      const text = window.location.href
+      if (!(window as any).location) return
+      const text = (window as any).location.href
       navigator.clipboard.writeText(text)
     },
   },
-}
+})
 </script>

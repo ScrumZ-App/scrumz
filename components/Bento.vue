@@ -6,31 +6,31 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+export default defineComponent({
   props: {
     name: {
       type: String,
       default: 'bento',
     },
     width: {
-      type: String,
-      default: '35',
+      type: Number,
+      default: 35,
     },
     height: {
-      type: String,
-      default: '18',
+      type: Number,
+      default: 18,
     },
     gap: {
-      type: String,
-      default: '1',
+      type: Number,
+      default: 1,
     },
     areas: {
       type: Array,
       default: () => [],
     },
     columns: {
-      type: Array,
+      type: Array as PropType<number[]>,
       default: () => [8, 17, 8],
     },
   },
@@ -49,7 +49,7 @@ export default {
       }
     },
   },
-}
+})
 </script>
 
 <style lang="scss">

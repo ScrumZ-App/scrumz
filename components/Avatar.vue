@@ -1,16 +1,16 @@
 <template>
   <BoringAvatar
-    size="3rem"
     :name="name"
+    :size="48"
     variant="beam"
     :colors="['#cdeccc', '#edd269', '#e88460', '#f23460', '#321d2e']"
   />
 </template>
 
-<script>
+<script lang="ts">
 import Avatar from 'vue-boring-avatars'
 
-export default {
+export default defineComponent({
   components: {
     BoringAvatar: Avatar,
   },
@@ -20,5 +20,5 @@ export default {
       required: true,
     },
   },
-}
+})
 </script>

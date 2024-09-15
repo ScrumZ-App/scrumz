@@ -2,16 +2,16 @@
   <div :alt="alt" :style="style" />
 </template>
 
-<script>
-export default {
+<script lang="ts">
+export default defineComponent({
   props: {
     width: {
-      type: String,
-      default: '8',
+      type: Number,
+      default: 8,
     },
     height: {
-      type: String,
-      default: '8',
+      type: Number,
+      default: 8,
     },
     alt: {
       type: String,
@@ -32,5 +32,5 @@ export default {
       }
     },
   },
-}
+})
 </script>

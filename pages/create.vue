@@ -3,13 +3,13 @@
     name="create"
     :areas="['logo fibonacci t-shirt custom']"
     :columns="[8, 8, 8, 8]"
-    height="12"
+    :height="12"
   >
     <NuxtLink to="/"><Logo /></NuxtLink>
     <Card class="card" flip locked mirror>
       <template #title> fibonacci </template>
       <template #icon>
-        <Image height="7" width="7" src="/cards/fibonacci.png" />
+        <Image :height="7" :width="7" src="/cards/fibonacci.png" />
       </template>
       <template #back>
         <div class="create-card" @click="create('fibonacci')">
@@ -20,8 +20,8 @@
             <li>each number is the sum of the two preceding ones</li>
           </ul>
           <Press
-            width="6"
-            height="2"
+            :width="6"
+            :height="2"
             size="120%"
             background="var(--color-primary)"
             color="var(--color-white)"
@@ -34,7 +34,7 @@
     <Card class="card" flip locked mirror>
       <template #title> t-shirt </template>
       <template #icon>
-        <Image height="8" width="8" src="/cards/t-shirt.png" />
+        <Image :height="8" :width="8" src="/cards/t-shirt.png" />
       </template>
       <template #back>
         <div class="create-card" @click="create('t-shirt')">
@@ -45,8 +45,8 @@
             <li>each size is a t-shirt size</li>
           </ul>
           <Press
-            width="6"
-            height="2"
+            :width="6"
+            :height="2"
             size="120%"
             background="var(--color-primary)"
             color="var(--color-white)"
@@ -59,7 +59,7 @@
     <Card class="card" flip locked mirror>
       <template #title> custom </template>
       <template #icon>
-        <Image height="8" width="8" src="/cards/custom.png" />
+        <Image :height="8" :width="8" src="/cards/custom.png" />
       </template>
       <template #back>
         <div class="create-card" @click="create('custom')">
@@ -70,8 +70,8 @@
             <li>customize your own deck</li>
           </ul>
           <Press
-            width="6"
-            height="2"
+            :width="6"
+            :height="2"
             size="120%"
             background="var(--color-primary)"
             color="var(--color-white)"
@@ -84,15 +84,17 @@
   </Bento>
 </template>
 
-<script>
-export default {
-  data() {
+<script lang="ts">
+export default defineComponent({
+  data(): {
+    user: any
+  } {
     return {
       user: inject('user'),
     }
   },
   methods: {
-    async create(type) {
+    async create(type: string): Promise<void> {
       const roomName = await this.$scrumz.createRoom({
         uid: this.user.uid,
         type,
@@ -102,7 +104,7 @@ export default {
       this.$router.push(`/room/${roomName}`)
     },
   },
-}
+})
 </script>
 
 <style lang="scss">

@@ -4,17 +4,19 @@
   </NuxtLayout>
 </template>
 
-<script>
+<script lang="ts">
 import { getAuth, signInAnonymously } from 'firebase/auth'
 import 'vue-toast-notification/dist/theme-sugar.css'
 
-export default {
+export default defineComponent({
   provide() {
     return {
       user: this.user,
     }
   },
-  data() {
+  data(): {
+    user: any
+  } {
     return {
       user: null,
     }
@@ -25,11 +27,11 @@ export default {
       await signInAnonymously(getAuth())
     }
     this.user = await getCurrentUser()
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.NODE_ENV === 'development' && this.user) {
       console.log('Signed in anonymously. UID:', this.user.uid)
     }
   },
-}
+})
 </script>
 
 <style lang="scss">

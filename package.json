@@ -17,6 +17,7 @@
     "@nuxt/devtools": "latest",
     "@nuxt/eslint": "^0.5.7",
     "@nuxt/eslint-config": "^0.5.7",
+    "@nuxtjs/i18n": "^8.5.3",
     "eslint": "^9.10.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.2.1",

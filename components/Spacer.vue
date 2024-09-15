@@ -2,8 +2,8 @@
   <div class="spacer" :style="style" />
 </template>
 
-<script>
-export default {
+<script lang="ts">
+export default defineComponent({
   props: {
     x: {
       type: String,
@@ -22,7 +22,7 @@ export default {
       }
     },
   },
-}
+})
 </script>
 
 <style lang="scss">

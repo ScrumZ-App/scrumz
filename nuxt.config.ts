@@ -38,6 +38,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/eslint',
     '@pinia/nuxt',
+    '@nuxtjs/i18n',
   ],
 
   pinia: {
@@ -68,5 +69,5 @@ export default defineNuxtConfig({
     },
   },
 
-  compatibilityDate: '2024-09-13'
+  compatibilityDate: '2024-09-13',
 })

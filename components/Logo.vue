@@ -1,7 +1,7 @@
 <template>
   <Card
     class="logo"
-    height="4"
+    :height="4"
     background="var(--color-primary)"
     color="var(--color-white)"
     custom

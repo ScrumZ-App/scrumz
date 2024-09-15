@@ -17,8 +17,8 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+export default defineComponent({
   props: {
     modelValue: {
       type: String,
@@ -39,27 +39,30 @@ export default {
       get() {
         return this.modelValue
       },
-      set(value) {
+      set(value: string) {
         this.$emit('update:modelValue', value)
       },
     },
   },
   mounted() {
     if (this.persistentFocus) {
-      this.$refs.input?.focus()
+      const input = this.$refs.input as HTMLInputElement
+      input?.focus()
     }
   },
   methods: {
     focus() {
-      this.$refs.input?.focus()
+      const input = this.$refs.input as HTMLInputElement
+      input?.focus()
     },
     onBlur() {
       if (this.persistentFocus && !this.query) {
-        this.$refs.input?.focus()
+        const input = this.$refs.input as HTMLInputElement
+        input?.focus()
       }
     },
   },
-}
+})
 </script>
 
 <style lang="scss">

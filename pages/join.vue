@@ -1,7 +1,7 @@
 <template>
   <Bento name="join" :areas="['logo', 'roomNameInput', 'join']" :columns="[35]">
     <NuxtLink to="/"><Logo /></NuxtLink>
-    <Card class="room-name-input" height="10" width="35">
+    <Card class="room-name-input" :height="10" :width="35">
       <template #title></template>
       <template #icon>
         <SuggestiveInput

@@ -8,10 +8,10 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import QRCode from 'vue-qrcode'
 
-export default {
+export default defineComponent({
   components: {
     QRCode,
   },
@@ -22,7 +22,8 @@ export default {
   },
   mounted() {
     if (typeof window !== 'undefined') return
-    this.currentURL = window.location.href
+    if (!(window as any).location) return
+    this.currentURL = (window as any).location.href
   },
-}
+})
 </script>

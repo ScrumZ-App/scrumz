@@ -5,16 +5,16 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+export default defineComponent({
   props: {
     width: {
-      type: String,
-      default: '8',
+      type: Number,
+      default: 8,
     },
     height: {
-      type: String,
-      default: '2',
+      type: Number,
+      default: 2,
     },
     background: {
       type: String,
@@ -50,7 +50,7 @@ export default {
       }
     },
   },
-}
+})
 </script>
 
 <style lang="scss">
