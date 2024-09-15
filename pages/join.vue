@@ -35,6 +35,7 @@
 <script lang="ts">
 import { adjectives, names } from '~/config'
 import type SuggestiveInput from '~/components/SuggestiveInput.vue'
+
 export default defineComponent({
   data(): {
     isLoading: boolean
