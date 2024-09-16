@@ -25,82 +25,81 @@
   </div>
 </template>
 
-<script lang="ts">
-export default defineComponent({
-  data(): {
-    querySuggestions: string[]
-  } {
-    return {
-      querySuggestions: [],
-    }
+<script setup lang="ts">
+const props = defineProps({
+  modelValue: {
+    type: String,
+    default: '',
   },
-  props: {
-    modelValue: {
-      type: String,
-      default: '',
-    },
-    placeholder: {
-      type: String,
-      default: '',
-    },
-    list: {
-      type: Array as PropType<string[]>,
-      default: () => [],
-    },
-    persistentFocus: {
-      type: Boolean,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
+  placeholder: {
+    type: String,
+    default: '',
   },
-  emits: ['update:modelValue', 'enter'],
-  computed: {
-    query: {
-      get(): string {
-        return this.modelValue
-      },
-      set(value: string): void {
-        this.$emit('update:modelValue', value)
-      },
-    },
+  list: {
+    type: Array as PropType<string[]>,
+    default: () => [],
   },
-  mounted() {
-    if (this.persistentFocus) {
-      const input = this.$refs.input as HTMLInputElement
-      input?.focus()
-    }
+  persistentFocus: {
+    type: Boolean,
+    default: false,
   },
-  methods: {
-    focus(): void {
-      const input = this.$refs.input as HTMLInputElement
-      input?.focus()
-    },
-    onBlur(): void {
-      if (this.persistentFocus && !this.query) {
-        const input = this.$refs.input as HTMLInputElement
-        input?.focus()
-      }
-      this.query = this.query.length ? (this.querySuggestions[0] ?? '') : ''
-    },
-    updateSuggestions(query: string): void {
-      const suggestions = this.list.filter((item) => item.startsWith(query))
-      if (suggestions.includes(query)) {
-        this.querySuggestions = [query]
-        return
-      }
-      // randomize the suggestions
-      this.querySuggestions = suggestions.sort(() => Math.random() - 0.5)
-    },
-    filterInput(): void {
-      // Use a regular expression to remove non-letter characters
-      const newQuery = this.query.replace(/[^a-z]/g, '')
-      if (newQuery === this.query) this.updateSuggestions(newQuery)
-      this.query = newQuery
-    },
+  disabled: {
+    type: Boolean,
+    default: false,
   },
+})
+
+const emit = defineEmits(['update:modelValue', 'enter'])
+
+const querySuggestions = ref<string[]>([])
+const inputRef = useTemplateRef('input') as Ref<HTMLInputElement | null>
+
+const query = computed({
+  get: () => props.modelValue,
+  set: (value: string) => {
+    emit('update:modelValue', value)
+  },
+})
+
+onMounted(() => {
+  if (props.persistentFocus && inputRef.value) {
+    inputRef.value.focus()
+  }
+})
+
+function focus(): void {
+  inputRef.value?.focus()
+}
+
+function onBlur(): void {
+  if (props.persistentFocus && !query.value) {
+    inputRef.value?.focus()
+  }
+  query.value = query.value.length ? (querySuggestions.value[0] ?? '') : ''
+}
+
+function updateSuggestions(query: string): void {
+  const suggestions = props.list.filter((item) => item.startsWith(query))
+  if (suggestions.includes(query)) {
+    querySuggestions.value = [query]
+    return
+  }
+
+  querySuggestions.value = suggestions.sort(() => Math.random() - 0.5)
+}
+
+function filterInput(): void {
+  const newQuery = query.value.toLocaleLowerCase().replace(/[^a-z]/g, '')
+  if (newQuery === query.value) updateSuggestions(newQuery)
+  query.value = newQuery
+}
+
+watch(query, (newQuery) => {
+  updateSuggestions(newQuery)
+})
+
+defineExpose({
+  focus,
 })
 </script>
 

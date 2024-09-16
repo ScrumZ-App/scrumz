@@ -92,26 +92,28 @@
   </Bento>
 </template>
 
-<script lang="ts">
-export default defineComponent({
-  data(): {
-    user: any
-  } {
-    return {
-      user: inject('user'),
-    }
-  },
-  methods: {
-    async create(type: string): Promise<void> {
-      const roomName = await this.$scrumz.createRoom({
-        uid: this.user.uid,
-        type,
-      })
+<script setup lang="ts">
+import { inject } from 'vue'
+import { useRouter } from 'vue-router'
 
-      // go room page
-      this.$router.push(`/${roomName}`)
-    },
-  },
+const { t: $t } = useI18n()
+const scrumz = useScrumz()
+
+const user = inject<any>('user')
+const router = useRouter()
+
+async function create(type: string): Promise<void> {
+  console.log(user)
+  const roomName = await scrumz.createRoom({
+    uid: user.value.uid,
+    type,
+  })
+
+  router.push(`/${roomName}`)
+}
+
+useHead({
+  title: 'scrumz.app - ' + $t('create-room'),
 })
 </script>
 

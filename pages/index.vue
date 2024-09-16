@@ -33,6 +33,10 @@
           src="/mood.svg"
           dark-src="/mood-dark.svg"
         />
+        <div class="buttons">
+          <ToggleLanguage />
+          <ToggleTheme />
+        </div>
       </template>
     </Card>
     <Card class="info-card" :height="9" custom>
@@ -67,6 +71,10 @@
   </Bento>
 </template>
 
+<script setup lang="ts">
+const { t: $t } = useI18n()
+</script>
+
 <style lang="scss">
 .home {
   display: flex;
@@ -89,6 +97,18 @@
   }
   .mood-card {
     grid-area: mood;
+    position: relative;
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 1rem;
+      position: absolute;
+      right: 1rem;
+      bottom: 1rem;
+      gap: 1rem;
+      flex-direction: column;
+    }
   }
   .info-card {
     grid-area: info;

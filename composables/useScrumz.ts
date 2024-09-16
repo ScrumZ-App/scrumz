@@ -1,6 +1,6 @@
 import { ref as dbRef, push, update, get } from 'firebase/database'
 
-import { adjectives, names } from '~/config'
+import { adjectives, nouns } from '~/config'
 
 const defaultRooms: { [key: string]: Option[] } = {
   'fibonacci': [
@@ -38,12 +38,12 @@ const defaultRooms: { [key: string]: Option[] } = {
 
 const scrumz = {
   createNewId: function (): string {
-    const namesArr = names['tr-TR']
-    const adjectivesArr = adjectives['tr-TR']
+    const nounsArr = [...nouns['tr-TR']]
+    const adjectivesArr = [...adjectives['tr-TR']]
     return (
       adjectivesArr[Math.floor(Math.random() * adjectivesArr.length)] +
       '-' +
-      namesArr[Math.floor(Math.random() * namesArr.length)]
+      nounsArr[Math.floor(Math.random() * nounsArr.length)]
     )
   },
   roomExists: async function (roomId: string): Promise<boolean> {
@@ -80,16 +80,6 @@ const scrumz = {
   },
 }
 
-declare module '@vue/runtime-core' {
-  interface ComponentCustomProperties {
-    readonly $scrumz: typeof scrumz
-  }
+export default function () {
+  return scrumz
 }
-
-export default defineNuxtPlugin(() => {
-  return {
-    provide: {
-      scrumz,
-    },
-  }
-})

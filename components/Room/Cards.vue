@@ -9,28 +9,30 @@
     <Card class="logo-card" flip :width="6" :height="8">
       <template #icon>
         <div>
-          <span>scrumz</span>
+          <span>{{ $t('scrumz') }}</span>
         </div>
       </template>
       <template #back>
         <div class="config-card" v-if="user && room">
-          <Press @click="changeName"> Change Name </Press>
+          <Press @click="changeName"> {{ $t('change-name') }} </Press>
           <template v-if="room.createdBy === user.uid">
             <Press @click="toggleVisibility">
-              <template v-if="room.isOpened"> Hide Results </template>
-              <template v-else> Show Results </template>
+              <template v-if="room.isOpened">
+                {{ $t('hide-results') }}
+              </template>
+              <template v-else> {{ $t('show-results') }} </template>
             </Press>
-            <Press @click="clearVotes"> Clear Votes </Press>
+            <Press @click="resetVotes"> {{ $t('reset-votes') }} </Press>
           </template>
         </div>
       </template>
     </Card>
     <Card
-      v-for="option in room.options.sort((a, b) => a.position - b.position)"
+      v-for="option in room.options?.sort((a, b) => a.position - b.position)"
       class="card"
       :class="{
         'voted': isUserVotedForOption(option.position),
-        'most-voted': getMostVotedOption() === option.position,
+        'most-voted': mostVotedOption === option.position,
       }"
       locked
       mirror
@@ -53,151 +55,155 @@
   </Bento>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref as dbRef, push, update, set } from 'firebase/database'
 
-export default defineComponent({
-  props: {
-    roomId: {
-      type: String,
-      default: '',
-    },
-    room: {
-      type: Object as PropType<Room>,
-      default: null,
-    },
-    user: {
-      type: Object as PropType<User>,
-      default: null,
-    },
+const { t: $t } = useI18n()
+
+const props = defineProps({
+  roomId: {
+    type: String,
+    default: '',
   },
-
-  methods: {
-    /* Lifecycle */
-    async load() {
-      if (this.userAlreadyInRoom()) this.fillRole()
-      else await this.addUserToRoom()
-    },
-    userAlreadyInRoom(): boolean {
-      if (this.room === null) return false
-      if (!this.user?.uid) return false
-      const users = this.room.users
-      if (users === undefined) return false
-      if (users === null) return false
-      if (users[this.user.uid] === undefined) return false
-      console.log('Already in the room')
-      return true
-    },
-    fillRole(): void {
-      if (!this.user) return
-      if (!this.room) return
-      console.log('Filling role')
-      const users = this.room.users
-      this.user.role = users[this.user.uid].role
-      this.user.name = users[this.user.uid].name
-    },
-    async addUserToRoom(): Promise<void> {
-      if (!this.user) return
-      console.log('Not in the room, adding user')
-      // set role to developer
-      const usersRef = dbRef(
-        useDatabase(),
-        'rooms/' + this.roomId + '/users/' + this.user.uid
-      )
-      try {
-        await set(usersRef, {
-          name: '',
-          role: 'developer',
-        })
-      } catch (error) {
-        console.error(error)
-      }
-    },
-
-    /* Buttons */
-    async changeName(): Promise<void> {
-      this.$emit('change-name')
-    },
-    async toggleVisibility(): Promise<void> {
-      if (!this.room) return
-      const roomRef = dbRef(useDatabase(), 'rooms/' + this.roomId)
-      await update(roomRef, {
-        isOpened: !this.room.isOpened,
-      })
-    },
-    async clearVotes(): Promise<void> {
-      if (!this.room) return
-      const roomRef = dbRef(useDatabase(), 'rooms/' + this.roomId)
-      await update(roomRef, {
-        isOpened: false,
-        version: this.room.version + 1,
-      })
-    },
-    async voteToCard(option: { position: number }): Promise<void> {
-      if (!this.room) return
-      if (!this.user) return
-      if (this.room.isOpened) return
-      const voteVersionsRef = dbRef(
-        useDatabase(),
-        'rooms/' + this.roomId + '/voteVersions/' + this.room.version + '/'
-      )
-      try {
-        push(voteVersionsRef, {
-          user: this.user.uid,
-          option: option.position,
-        })
-      } catch (error) {
-        console.error(error)
-      }
-    },
-
-    /* Vote Helpers */
-    singleVotes(): { user: string; option: number }[] {
-      if (!this.room) return []
-      const votes = this.room.voteVersions?.[this.room.version]
-      if (votes === undefined) return []
-      if (votes === null) return []
-      const votesArray = Object.values(votes)
-      const voters = [...new Set(votesArray.map((vote) => vote.user))]
-      const singleVotes = voters.map(
-        (voter) =>
-          votesArray.findLast((vote) => vote.user === voter) as {
-            user: string
-            option: number
-          }
-      )
-      return singleVotes || []
-    },
-    getAvatarsOfOption(optionPosition: number): string[] {
-      return this.singleVotes()
-        .filter((vote) => vote.option === optionPosition)
-        .map((vote) => vote.user)
-        .map((userId) => this.room?.users[userId]?.name || '')
-    },
-    isUserVotedForOption(optionPosition: number): boolean {
-      if (!this.user) return false
-      return !!this.singleVotes().find(
-        (vote) => vote.option === optionPosition && vote.user === this.user?.uid
-      )
-    },
-    getVoteCount(optionPosition: number): number {
-      return this.singleVotes().filter((vote) => vote.option === optionPosition)
-        .length
-    },
-    getMostVotedOption(): number {
-      if (!this.room) return -1
-      const mostVotedOptions = [...this.room.options]
-        .map((option) => ({
-          ...option,
-          votes: this.getVoteCount(option.position),
-        }))
-        .sort((a, b) => b.position - a.position)
-        .sort((a, b) => {
-          return b.votes - a.votes
-        })
-      if (mostVotedOptions[0].votes === 0) return -1
-      return mostVotedOptions[0].position
-    },
+  room: {
+    type: Object as PropType<Room>,
+    default: null,
   },
+  user: {
+    type: Object as PropType<User>,
+    default: null,
+  },
+})
+
+const debug = inject('debug') as Ref<any>
+
+const emit = defineEmits(['change-name'])
+const database = useDatabase()
+
+// helper functions
+const userAlreadyInRoom = () => {
+  if (!props.room || !props.user?.uid) return false
+  if (debug.value) console.log('Checking if user already in room')
+  const users = props.room.users
+  return users && users[props.user.uid] !== undefined
+}
+
+const fillRole = () => {
+  if (!props.user || !props.room) return
+  if (debug.value) console.log('User already in room')
+  const users = props.room.users
+  props.user.role = users[props.user.uid].role
+  props.user.name = users[props.user.uid].name
+}
+
+const addUserToRoom = async () => {
+  if (!props.user) return
+  if (debug.value) console.log('Adding user to room')
+  const usersRef = dbRef(
+    database,
+    `rooms/${props.roomId}/users/${props.user.uid}`
+  )
+  try {
+    await set(usersRef, {
+      name: '',
+      role: 'developer',
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+async function load() {
+  if (userAlreadyInRoom()) {
+    fillRole()
+  } else {
+    await addUserToRoom()
+  }
+}
+
+const changeName = () => {
+  emit('change-name')
+}
+
+const toggleVisibility = async () => {
+  if (!props.room) return
+  const roomRef = dbRef(database, `rooms/${props.roomId}`)
+  await update(roomRef, {
+    isOpened: !props.room.isOpened,
+  })
+}
+
+const resetVotes = async () => {
+  if (!props.room) return
+  const roomRef = dbRef(database, `rooms/${props.roomId}`)
+  await update(roomRef, {
+    isOpened: false,
+    version: props.room.version + 1,
+  })
+}
+
+const voteToCard = async (option: { position: number }) => {
+  if (!props.room || !props.user || props.room.isOpened) return
+  const voteVersionsRef = dbRef(
+    database,
+    `rooms/${props.roomId}/voteVersions/${props.room.version}`
+  )
+  try {
+    await push(voteVersionsRef, {
+      user: props.user.uid,
+      option: option.position,
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+const singleVotes = computed(() => {
+  if (!props.room) return []
+  const votes = props.room.voteVersions?.[props.room.version]
+  if (!votes) return []
+  const votesArray = Object.values(votes)
+  const voters = [...new Set(votesArray.map((vote) => vote.user))]
+  return (
+    voters.map(
+      (voter) =>
+        votesArray.findLast((vote) => vote.user === voter) as {
+          user: string
+          option: number
+        }
+    ) || []
+  )
+})
+
+const getAvatarsOfOption = (optionPosition: number) => {
+  return singleVotes.value
+    .filter((vote) => vote.option === optionPosition)
+    .map((vote) => props.room?.users[vote.user]?.name || '')
+}
+
+const isUserVotedForOption = (optionPosition: number) => {
+  return !!singleVotes.value.find(
+    (vote) => vote.option === optionPosition && vote.user === props.user?.uid
+  )
+}
+
+const getVoteCount = (optionPosition: number) => {
+  return singleVotes.value.filter((vote) => vote.option === optionPosition)
+    .length
+}
+
+const mostVotedOption = computed(() => {
+  if (!props.room) return -1
+  const mostVotedOptions = [...props.room.options]
+    .map((option) => ({
+      ...option,
+      votes: getVoteCount(option.position),
+    }))
+    .sort((a, b) => b.votes - a.votes || b.position - a.position)
+  return mostVotedOptions[0].votes === 0 ? -1 : mostVotedOptions[0].position
+})
+
+defineExpose({
+  load,
 })
 </script>

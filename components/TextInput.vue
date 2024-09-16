@@ -17,51 +17,49 @@
   </div>
 </template>
 
-<script lang="ts">
-export default defineComponent({
-  props: {
-    modelValue: {
-      type: String,
-      default: '',
-    },
-    placeholder: {
-      type: String,
-      default: '',
-    },
-    persistentFocus: {
-      type: Boolean,
-      default: false,
-    },
+<script setup lang="ts">
+const props = defineProps({
+  modelValue: {
+    type: String,
+    default: '',
   },
-  emits: ['update:modelValue', 'enter'],
-  computed: {
-    query: {
-      get() {
-        return this.modelValue
-      },
-      set(value: string) {
-        this.$emit('update:modelValue', value)
-      },
-    },
+  placeholder: {
+    type: String,
+    default: '',
   },
-  mounted() {
-    if (this.persistentFocus) {
-      const input = this.$refs.input as HTMLInputElement
-      input?.focus()
-    }
+  persistentFocus: {
+    type: Boolean,
+    default: false,
   },
-  methods: {
-    focus() {
-      const input = this.$refs.input as HTMLInputElement
-      input?.focus()
-    },
-    onBlur() {
-      if (this.persistentFocus && !this.query) {
-        const input = this.$refs.input as HTMLInputElement
-        input?.focus()
-      }
-    },
-  },
+})
+
+const emit = defineEmits(['update:modelValue', 'enter'])
+
+const query = computed({
+  get: () => props.modelValue,
+  set: (value: string) => emit('update:modelValue', value),
+})
+
+function focus() {
+  const input = document.querySelector('input') as HTMLInputElement
+  input?.focus()
+}
+
+function onBlur() {
+  if (props.persistentFocus && !query.value) {
+    const input = document.querySelector('input') as HTMLInputElement
+    input?.focus()
+  }
+}
+
+onMounted(() => {
+  if (props.persistentFocus) {
+    focus()
+  }
+})
+
+defineExpose({
+  focus,
 })
 </script>
 

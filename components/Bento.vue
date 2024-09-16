@@ -6,49 +6,46 @@
   </div>
 </template>
 
-<script lang="ts">
-export default defineComponent({
-  props: {
-    name: {
-      type: String,
-      default: 'bento',
-    },
-    width: {
-      type: Number,
-      default: 35,
-    },
-    height: {
-      type: Number,
-      default: 18,
-    },
-    gap: {
-      type: Number,
-      default: 1,
-    },
-    areas: {
-      type: Array,
-      default: () => [],
-    },
-    columns: {
-      type: Array as PropType<number[]>,
-      default: () => [8, 17, 8],
-    },
+<script setup lang="ts">
+const props = defineProps({
+  name: {
+    type: String,
+    default: 'bento',
   },
-  computed: {
-    style() {
-      return {
-        '--bento-width': `${this.width * 2}rem`,
-        '--bento-height': `${this.height * 2}rem`,
-        '--bento-grid-template-areas': `${this.areas
-          .map((row) => `'${row}'`)
-          .join(' ')}`,
-        '--bento-grid-template-columns': `${this.columns
-          .map((col) => `${col * 2}rem`)
-          .join(' ')}`,
-        '--bento-gap': `${this.gap * 2}rem`,
-      }
-    },
+  width: {
+    type: Number,
+    default: 35,
   },
+  height: {
+    type: Number,
+    default: 18,
+  },
+  gap: {
+    type: Number,
+    default: 1,
+  },
+  areas: {
+    type: Array,
+    default: () => [],
+  },
+  columns: {
+    type: Array as PropType<number[]>,
+    default: () => [8, 17, 8],
+  },
+})
+
+const style = computed(() => {
+  return {
+    '--bento-width': `${props.width * 2}rem`,
+    '--bento-height': `${props.height * 2}rem`,
+    '--bento-grid-template-areas': `${props.areas
+      .map((row) => `'${row}'`)
+      .join(' ')}`,
+    '--bento-grid-template-columns': `${props.columns
+      .map((col) => `${col * 2}rem`)
+      .join(' ')}`,
+    '--bento-gap': `${props.gap * 2}rem`,
+  }
 })
 </script>
 

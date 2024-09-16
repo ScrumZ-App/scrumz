@@ -6,7 +6,10 @@
   "mood": "mood",
   "join-room": "join room",
   "create-room": "create room",
-  "change-name": "change",
+  "room": "room",
+  "change-name": "change name",
+  "your-name": "your name",
+  "set-name": "let's go",
   "info-card": {
     "what-is-scrumz": "scrumz.app was developed for you to gather with your team members for story point estimation.",
     "what-is-scrum-poker": "work together and achieve success in your projects with our fun and flexible structure provided by scrum poker."
@@ -30,5 +33,8 @@
     "customize-your-own-deck": "customize your own deck"
   },
   "use-this-template": "use this template",
-  "room-not-found": "Room not found"
+  "room-not-found": "Room not found",
+  "hide-results": "hide results",
+  "show-results": "show results",
+  "reset-votes": "reset votes"
 }

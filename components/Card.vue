@@ -21,64 +21,61 @@
   </div>
 </template>
 
-<script lang="ts">
-export default defineComponent({
-  props: {
-    width: {
-      type: Number,
-      default: 8,
-    },
-    height: {
-      type: Number,
-      default: 12,
-    },
-    flip: {
-      type: Boolean,
-      default: false,
-    },
-    back: {
-      type: Boolean,
-      default: false,
-    },
-    custom: {
-      type: Boolean,
-      default: false,
-    },
-    badge: {
-      type: Boolean,
-      default: false,
-    },
-    background: {
-      type: String,
-      default: 'var(--color-card)',
-    },
-    color: {
-      type: String,
-      default: 'var(--color-text)',
-    },
-    mirror: {
-      type: Boolean,
-      default: false,
-    },
-    backTitle: {
-      type: Boolean,
-      default: false,
-    },
-    loading: {
-      type: Boolean,
-      default: false,
-    },
+<script setup lang="ts">
+const props = defineProps({
+  width: {
+    type: Number,
+    default: 8,
   },
-  computed: {
-    style() {
-      return {
-        '--card-width': `${this.width * 2}rem`,
-        '--card-height': `${this.height * 2}rem`,
-        '--card-background': this.background,
-        'color': this.color,
-      }
-    },
+  height: {
+    type: Number,
+    default: 12,
   },
+  flip: {
+    type: Boolean,
+    default: false,
+  },
+  back: {
+    type: Boolean,
+    default: false,
+  },
+  custom: {
+    type: Boolean,
+    default: false,
+  },
+  badge: {
+    type: Boolean,
+    default: false,
+  },
+  background: {
+    type: String,
+    default: 'var(--color-card)',
+  },
+  color: {
+    type: String,
+    default: 'var(--color-text)',
+  },
+  mirror: {
+    type: Boolean,
+    default: false,
+  },
+  backTitle: {
+    type: Boolean,
+    default: false,
+  },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const style = computed(() => {
+  return {
+    '--card-width': `${props.width * 2}rem`,
+    '--card-height': `${props.height * 2}rem`,
+    '--card-background': props.background,
+    'color': props.color,
+  }
 })
 </script>
 

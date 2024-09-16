@@ -12,6 +12,10 @@
   </Card>
 </template>
 
+<script setup lang="ts">
+const { t: $t } = useI18n()
+</script>
+
 <style lang="scss">
 .logo {
   user-select: none;

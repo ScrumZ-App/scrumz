@@ -2,45 +2,42 @@
   <div class="image-component" :alt="alt" :style="style" :class="{ dark }" />
 </template>
 
-<script lang="ts">
-export default defineComponent({
-  props: {
-    width: {
-      type: Number,
-      default: 8,
-    },
-    height: {
-      type: Number,
-      default: 8,
-    },
-    alt: {
-      type: String,
-      default: 'Picture',
-    },
-    src: {
-      type: String,
-      default: '',
-    },
-    darkSrc: {
-      type: String,
-      default: '',
-    },
-    dark: {
-      type: Boolean,
-      default: false,
-    },
+<script setup lang="ts">
+const props = defineProps({
+  width: {
+    type: Number,
+    default: 8,
   },
-  computed: {
-    style() {
-      return {
-        'width': `${this.width * 2}rem`,
-        'height': `${this.height * 2}rem`,
-        '--light-background': `url(${this.src})`,
-        '--dark-background': `url(${this.darkSrc || this.src})`,
-        'backgroundSize': 'contain',
-      }
-    },
+  height: {
+    type: Number,
+    default: 8,
   },
+  alt: {
+    type: String,
+    default: 'Picture',
+  },
+  src: {
+    type: String,
+    default: '',
+  },
+  darkSrc: {
+    type: String,
+    default: '',
+  },
+  dark: {
+    type: Boolean,
+    default: false,
+  },
+})
+
+const style = computed(() => {
+  return {
+    'width': `${props.width * 2}rem`,
+    'height': `${props.height * 2}rem`,
+    '--light-background': `url(${props.src})`,
+    '--dark-background': `url(${props.darkSrc || props.src})`,
+    'backgroundSize': 'contain',
+  }
 })
 </script>
 
@@ -48,7 +45,7 @@ export default defineComponent({
 .image-component {
   background: var(--light-background) no-repeat center center;
 }
-@media (prefers-color-scheme: dark) {
+[data-theme='dark'] {
   .image-component {
     background: var(--dark-background) no-repeat center center;
     &.dark {

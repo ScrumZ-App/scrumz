@@ -6,7 +6,10 @@
   "mood": "mood",
   "join-room": "odaya katıl",
   "create-room": "oda oluştur",
-  "change-name": "değiştir",
+  "room": "oda",
+  "change-name": "ad değiştir",
+  "your-name": "adınız",
+  "set-name": "hadi başlayalım",
   "info-card": {
     "what-is-scrumz": "scrumz.app, hikaye puanı tahmini için ekip arkadaşlarınızla bir araya gelmeniz için geliştirildi.",
     "what-is-scrum-poker": "scrum poker'in sunduğu eğlenceli ve esnek yapı ile birlikte çalışın ve projelerinizde başarıya ulaşın."
@@ -30,5 +33,8 @@
     "customize-your-own-deck": "kartları kişiselleştir"
   },
   "use-this-template": "bu şablonu kullan",
-  "room-not-found": "Oda bulunamadı"
+  "room-not-found": "Oda bulunamadı",
+  "hide-results": "sonuçları gizle",
+  "show-results": "sonuçları göster",
+  "reset-votes": "oyları sıfırla"
 }

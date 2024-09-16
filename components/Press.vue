@@ -5,55 +5,52 @@
   </div>
 </template>
 
-<script lang="ts">
-export default defineComponent({
-  props: {
-    width: {
-      type: Number,
-      default: 8,
-    },
-    height: {
-      type: Number,
-      default: 2,
-    },
-    background: {
-      type: String,
-      default: 'var(--color-card)',
-    },
-    color: {
-      type: String,
-      default: 'var(--color-text)',
-    },
-    badge: {
-      type: Boolean,
-      default: false,
-    },
-    size: {
-      type: String,
-      default: '200%',
-    },
-    loading: {
-      type: Boolean,
-      default: false,
-    },
-    badgeColor: {
-      type: String,
-      default: 'var(--color-badge)',
-    },
+<script setup lang="ts">
+const props = defineProps({
+  width: {
+    type: Number,
+    default: 8,
   },
-  computed: {
-    style() {
-      return {
-        '--button-width': `${this.width * 2}rem`,
-        '--button-height': `${this.height * 2}rem`,
-        'fontSize': this.size,
-        '--badge-color': this.badgeColor,
-        'background': this.background,
-        'color': this.color,
-        '--badge-position': `${this.height <= 2 ? 0.5 : 1}rem`,
-      }
-    },
+  height: {
+    type: Number,
+    default: 2,
   },
+  background: {
+    type: String,
+    default: 'var(--color-card)',
+  },
+  color: {
+    type: String,
+    default: 'var(--color-text)',
+  },
+  badge: {
+    type: Boolean,
+    default: false,
+  },
+  size: {
+    type: String,
+    default: '200%',
+  },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
+  badgeColor: {
+    type: String,
+    default: 'var(--color-badge)',
+  },
+})
+
+const style = computed(() => {
+  return {
+    '--button-width': `${props.width * 2}rem`,
+    '--button-height': `${props.height * 2}rem`,
+    'fontSize': props.size,
+    '--badge-color': props.badgeColor,
+    'background': props.background,
+    'color': props.color,
+    '--badge-position': `${props.height <= 2 ? 0.5 : 1}rem`,
+  }
 })
 </script>
 

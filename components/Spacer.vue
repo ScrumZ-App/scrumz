@@ -2,27 +2,22 @@
   <div class="spacer" :style="style" />
 </template>
 
-<script lang="ts">
-export default defineComponent({
-  props: {
-    x: {
-      type: String,
-      default: '0', // px, em, rem, %
-    },
-    y: {
-      type: String,
-      default: '0', // px, em, rem, %
-    },
+<script setup lang="ts">
+const props = defineProps({
+  x: {
+    type: String,
+    default: '0', // px, em, rem, %
   },
-  computed: {
-    style() {
-      return {
-        '--spacer-x': this.x,
-        '--spacer-y': this.y,
-      }
-    },
+  y: {
+    type: String,
+    default: '0', // px, em, rem, %
   },
 })
+
+const style = computed(() => ({
+  '--spacer-x': props.x,
+  '--spacer-y': props.y,
+}))
 </script>
 
 <style lang="scss">

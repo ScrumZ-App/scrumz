@@ -1,0 +1,36 @@
+Kurallar
+- Kullanıcı adları
+  - DataType: String
+  - Allow: [CREATE, READ, UPDATE]
+  - Disallow: [DELETE]
+  - Length: 2-24
+  - silinemez
+  - sadece isme sahip kişi tarafından düzenlenebilir
+- Oda isimleri
+  - DataType: String
+  - Allow: [CREATE, READ]
+  - Disallow: [UPDATE, DELETE]
+  - Length: 1-18
+  - tire içermeli
+  - sadece harf içermeli
+- version
+  - DataType: Number
+  - Allow: [CREATE, READ, UPDATE]
+  - Disallow: [DELETE]
+  - Length: 1-3 (0-999)
+  - daha önce oluşturulmamışsa oluşturulabilir
+  - sıfırdan başlamalı
+  - sürekli artmalı, azaltılamaz
+  - sadece creator tarafından düzenlenebilir
+- isOpened
+  - DataType: Boolean
+  - Allow: [CREATE, READ, UPDATE]
+  - Disallow: [DELETE]
+  - Length: 1
+  - sadece creator tarafından düzenlenebilir
+- voteVersions
+  - DataType: Array
+  - Allow: [CREATE, READ, UPDATE]
+  - Disallow: [DELETE]
+  - Length: 1-3
+  

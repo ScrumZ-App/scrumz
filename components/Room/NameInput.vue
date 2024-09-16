@@ -12,59 +12,63 @@
       <template #icon>
         <TextInput
           v-model="name"
-          placeholder="your name"
+          :placeholder="$t('your-name')"
           persistent-focus
           @enter="selectName"
         />
       </template>
     </Card>
     <div class="change-button">
-      <Press :loading="isLoading" badge @click="selectName">
-        <span> {{ $t('change-name') }} </span>
+      <Press :width="10" :loading="isLoading" badge @click="selectName">
+        <span v-if="user.name"> {{ $t('change-name') }} </span>
+        <span v-else> {{ $t('set-name') }} </span>
       </Press>
     </div>
   </Bento>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref as dbRef, update } from 'firebase/database'
+import { ref, onMounted } from 'vue'
+import { useDatabase } from 'vuefire'
 
-export default defineComponent({
-  data() {
-    return {
-      isLoading: false,
-      name: '',
-    }
+const { t: $t } = useI18n()
+
+const props = defineProps({
+  roomId: {
+    type: String,
+    required: true,
   },
-  props: {
-    roomId: {
-      type: String,
-      required: true,
-    },
-    user: {
-      type: Object as PropType<User>,
-      required: true,
-    },
+  user: {
+    type: Object as PropType<User>,
+    required: true,
   },
-  emits: ['set'],
-  methods: {
-    async selectName() {
-      if (!this.roomId || !this.user.uid) return
-      this.isLoading = true
-      const userRef = dbRef(
-        useDatabase(),
-        'rooms/' + this.roomId + '/users/' + this.user.uid
-      )
-      await update(userRef, {
-        name: this.name,
-      })
-      this.isLoading = false
-      this.$emit('set', this.name)
-    },
-  },
-  mounted() {
-    this.name = this.user.name
-  },
+})
+const emit = defineEmits(['set'])
+
+const isLoading = ref(false)
+const name = ref('')
+
+async function selectName() {
+  if (!props.roomId || !props.user.uid) return
+
+  isLoading.value = true
+
+  const userRef = dbRef(
+    useDatabase(),
+    'rooms/' + props.roomId + '/users/' + props.user.uid
+  )
+
+  await update(userRef, {
+    name: name.value,
+  })
+
+  isLoading.value = false
+  emit('set', name.value)
+}
+
+onMounted(() => {
+  name.value = props.user.name
 })
 </script>
 

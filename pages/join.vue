@@ -1,24 +1,29 @@
 <template>
-  <Bento name="join" :areas="['logo', 'roomNameInput', 'join']" :columns="[35]">
+  <Bento
+    name="join"
+    :areas="['logo', 'roomNameInput', 'join']"
+    :columns="[35]"
+    :height="17"
+  >
     <NuxtLink to="/"><Logo /></NuxtLink>
-    <Card class="room-name-input" :height="10" :width="35">
+    <Card class="room-name-input" :height="9" :width="35">
       <template #title></template>
       <template #icon>
         <SuggestiveInput
           v-model="adjective"
+          persistent-focus
           :list="adjectives"
           :disabled="isLoading"
           :placeholder="adjectives[0]"
-          persistent-focus
           @enter="selectAdjective"
         />
         <span>&nbsp;-&nbsp;</span>
         <SuggestiveInput
-          ref="name"
-          v-model="name"
-          :list="names"
+          ref="nounInput"
+          v-model="noun"
+          :list="nouns"
           :disabled="isLoading"
-          :placeholder="names[0]"
+          :placeholder="nouns[0]"
           @enter="join"
         />
       </template>
@@ -32,56 +37,51 @@
   </Bento>
 </template>
 
-<script lang="ts">
-import { adjectives, names } from '~/config'
+<script setup lang="ts">
+import { adjectives as _adjectives, nouns as _nouns } from '~/config'
 import type SuggestiveInput from '~/components/SuggestiveInput.vue'
+import { useToast } from 'vue-toast-notification'
 
-export default defineComponent({
-  data(): {
-    isLoading: boolean
-    adjective: string
-    name: string
-  } {
-    return {
-      isLoading: false,
-      adjective: '',
-      name: '',
-    }
-  },
-  computed: {
-    adjectives(): string[] {
-      return adjectives['tr-TR']
-    },
-    names(): string[] {
-      return names['tr-TR']
-    },
-  },
-  methods: {
-    selectAdjective({ suggestion }: { suggestion: string }) {
-      this.adjective = suggestion
-      // focus on next element
-      const name = this.$refs.name as typeof SuggestiveInput
-      name?.focus()
-    },
-    async join({ suggestion }: { suggestion: string }) {
-      if (!this.adjective || !this.name) return
-      this.isLoading = true
-      // fill out the suggestion if it's not filled
-      if (suggestion) this.name = suggestion
-      // check room exists
-      const exists = await this.$scrumz.roomExists(
-        `${this.adjective}-${this.name}`
-      )
-      const nameInput = this.$refs.name as HTMLInputElement
-      nameInput?.focus()
-      this.isLoading = false
-      if (!exists) {
-        this.$toast.error(this.$t('room-not-found'))
-        return
-      }
-      this.$router.push(`/${this.adjective}-${this.name}`)
-    },
-  },
+const router = useRouter()
+const toast = useToast()
+const scrumz = useScrumz()
+const { t: $t } = useI18n()
+
+const isLoading = ref(false)
+const adjective = ref('')
+const noun = ref('')
+
+const adjectives = computed(() => _adjectives['tr-TR'])
+const nouns = computed(() => _nouns['tr-TR'])
+const nounRef = useTemplateRef('nounInput') as Ref<
+  typeof SuggestiveInput | null
+>
+
+function selectAdjective({ suggestion }: { suggestion: string }) {
+  adjective.value = suggestion
+  nounRef.value?.focus()
+}
+
+async function join({ suggestion }: { suggestion: string }) {
+  if (!adjective.value || !noun.value) return
+  isLoading.value = true
+  // fill out the suggestion if it's not filled
+  if (suggestion) noun.value = suggestion
+  // check room exists
+  const exists = await scrumz.roomExists(`${adjective.value}-${noun.value}`)
+  nounRef.value?.focus()
+  isLoading.value = false
+
+  if (!exists) {
+    toast.error($t('room-not-found'))
+    return
+  }
+
+  router.push(`/${adjective.value}-${noun.value}`)
+}
+
+useHead({
+  title: 'scrumz.app - ' + $t('join-room'),
 })
 </script>
 

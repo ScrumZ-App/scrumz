@@ -1,7 +1,7 @@
 <template>
   <template v-if="loading">
     <div class="loading">
-      <Avatar :name="randomLoader" :size="128" />
+      <UserAvatar :name="randomLoader" :size="128" />
     </div>
   </template>
   <RoomNameInput
@@ -17,7 +17,7 @@
     "
   />
   <RoomCards
-    ref="roomCards"
+    ref="roomCardsRef"
     v-if="room && user"
     v-show="!loading && user.name && !showUserInput"
     :room="room"
@@ -35,85 +35,89 @@
   </DebugCode>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { ref as dbRef } from 'firebase/database'
 import type RoomCards from '~/components/Room/Cards.vue'
 
-export default defineComponent({
-  data(): {
-    randomLoader: string
-    debug?: boolean
-    parentUser: any
-    loading: boolean
-    roomId: string
-    user: User | null
-    room: Room | null
-    showUserInput: boolean
-  } {
-    return {
-      randomLoader: Math.random().toString(36).substring(2, 7),
-      debug: inject('debug'),
-      parentUser: inject('user'),
-      loading: true,
-      roomId: '',
-      user: null,
-      room: null,
-      showUserInput: false,
+const { t: $t } = useI18n()
+const route = useRoute()
+
+const debug = inject('debug') as Ref<any>
+const parentUser = inject('user') as Ref<any>
+
+const randomLoader = Math.random().toString(36).substring(2, 7)
+const roomId = ref(route.params.id as string)
+const user = ref({
+  uid: '',
+  name: '',
+  role: '',
+})
+const room = computed(
+  () =>
+    useDatabaseObject(dbRef(useDatabase(), 'rooms/' + roomId.value)).value ||
+    null
+) as Ref<Room | null>
+const loading = ref(true)
+const showUserInput = ref(false)
+
+const roomCardsComponent = useTemplateRef('roomCardsRef') as Ref<
+  typeof RoomCards | null
+>
+
+onMounted(async () => {
+  if (parentUser.value) {
+    if (debug.value) console.log('Parent user found', parentUser.value)
+    user.value.uid = parentUser.value.uid
+    user.value.role = 'developer'
+  }
+})
+
+watch(
+  room,
+  (val) => {
+    if (debug.value) console.log('Room changed', val)
+    if (val === undefined || val === null) return
+    checkIfLoaded()
+  },
+  { deep: true }
+)
+
+watch(
+  user,
+  (val) => {
+    if (debug.value) console.log('User changed', val)
+    if (!val?.uid) return
+    checkIfLoaded()
+  },
+  { deep: true }
+)
+
+watch(
+  parentUser,
+  (val) => {
+    if (debug.value) console.log('Parent user changed', val)
+    if (!val) return
+    user.value = {
+      uid: val.uid,
+      name: '',
+      role: 'developer',
     }
   },
-  async mounted() {
-    if (typeof this.$route.params.id === 'string')
-      this.roomId = this.$route.params.id
-    this.room = (await useDatabaseObject(
-      dbRef(useDatabase(), 'rooms/' + this.roomId)
-    )) as unknown as Room | null
-    if (this.parentUser) {
-      this.user = {
-        uid: this.parentUser.uid,
-        name: '',
-        role: 'developer',
-      }
-    }
-  },
-  watch: {
-    room: {
-      handler: function (val) {
-        if (val === undefined) return
-        if (val === null) return
-        this.checkIfLoaded()
-      },
-      deep: true,
-    },
-    user: {
-      handler: function (val) {
-        if (!val.id) return
-        this.checkIfLoaded()
-      },
-      deep: true,
-    },
-    parentUser: {
-      handler: function (val) {
-        if (!val) return
-        this.user = {
-          uid: val.uid,
-          name: '',
-          role: 'developer',
-        }
-      },
-      deep: true,
-    },
-  },
-  methods: {
-    checkIfLoaded(): void {
-      if (!this.room || !this.user) return
-      if (!this.loading) return
-      this.loading = false
-      this.$nextTick(() => {
-        const roomCards = this.$refs.roomCards as typeof RoomCards
-        roomCards.load()
-      })
-    },
-  },
+  { deep: true }
+)
+
+function checkIfLoaded(): void {
+  if (!room.value || !user.value || !user.value.uid) return
+  if (!loading.value) return
+  if (debug.value) console.log('Room and user are loaded')
+  loading.value = false
+  nextTick(() => {
+    roomCardsComponent.value?.load()
+  })
+}
+
+useHead({
+  title: 'scrumz.app - ' + $t('room'),
 })
 </script>
 

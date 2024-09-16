@@ -1,5 +1,5 @@
 <template>
-  <BoringAvatar
+  <Avatar
     class="avatar"
     :name="name"
     :size="size"
@@ -14,22 +14,17 @@
   />
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import Avatar from 'vue-boring-avatars'
 
-export default defineComponent({
-  components: {
-    BoringAvatar: Avatar,
+defineProps({
+  name: {
+    type: String,
+    required: true,
   },
-  props: {
-    name: {
-      type: String,
-      required: true,
-    },
-    size: {
-      type: Number,
-      default: 48,
-    },
+  size: {
+    type: Number,
+    default: 48,
   },
 })
 </script>

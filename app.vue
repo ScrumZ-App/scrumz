@@ -5,37 +5,51 @@
   </NuxtLayout>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { getAuth, signInAnonymously } from 'firebase/auth'
 import 'vue-toast-notification/dist/theme-sugar.css'
 
-export default defineComponent({
-  provide() {
-    return {
-      user: computed(() => this.user),
-      debug: computed(() => this.debug),
-    }
-  },
-  data(): {
-    user: any
-    debug: boolean
-  } {
-    return {
-      user: null,
-      debug: false,
-    }
-  },
-  async beforeMount() {
-    const user = await getCurrentUser()
-    if (!user) {
-      await signInAnonymously(getAuth())
-    }
-    this.user = await getCurrentUser()
-    if (process.env.NODE_ENV === 'development' && this.user) {
-      console.log('Signed in anonymously. UID:', this.user.uid)
-    }
-  },
+const user = ref<any>(null)
+const debug = ref<boolean>(false)
+
+const providedUser = computed(() => user.value)
+const providedDebug = computed(() => debug.value)
+
+provide('user', providedUser)
+provide('debug', providedDebug)
+
+async function getCurrentUser() {
+  const auth = getAuth()
+  return auth.currentUser
+}
+
+onBeforeMount(async () => {
+  const currentUser = await getCurrentUser()
+  if (!currentUser) {
+    await signInAnonymously(getAuth())
+  }
+  user.value = await getCurrentUser()
+
+  const config = useRuntimeConfig()
+  if (config.public.nodeEnv === 'development' && user.value) {
+    console.log('Signed in anonymously. UID:', user.value.uid)
+  }
 })
+
+if (process.client) {
+  let currentTheme = ''
+  const storedTheme = localStorage.getItem('theme')
+  if (storedTheme) {
+    currentTheme = storedTheme
+  } else {
+    const preferredTheme = window.matchMedia('(prefers-color-scheme: dark)')
+      .matches
+      ? 'dark'
+      : 'light'
+    currentTheme = preferredTheme
+  }
+  document.documentElement.setAttribute('data-theme', currentTheme)
+}
 </script>
 
 <style lang="scss">
@@ -85,9 +99,8 @@ html {
     font-size: 2vh;
   }
 }
-
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme='light']) {
     --color-background: #1a1a1a;
     --color-primary: #ff3e6c;
     --color-white: #fff;
@@ -109,23 +122,31 @@ html {
   }
 }
 
+[data-theme='dark'] {
+  --color-background: #1a1a1a;
+  --color-primary: #ff3e6c;
+  --color-white: #fff;
+  --color-black: #030047;
+  --color-skeleton: #2f2f2f;
+  --color-faded: #9b9ab8;
+  --color-text: var(--color-white);
+  --color-card: #1f1f1f;
+  --color-card-active: #1f1f1f;
+  --color-badge: var(--color-primary);
+  --color-badge-active: #1f1f1f;
+  --color-border: var(--color-white);
+  --loading-gradient: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
 html,
 body {
   background-color: var(--color-background);
 }
-
-// .page-enter-active,
-// .page-leave-active {
-//   transition: all 0.4s;
-//   .bento-grid {
-//     transition: all 0.4s;
-//   }
-// }
-// .page-enter-from {
-//   .bento-grid {
-//     transform: translateY(100%);
-//   }
-// }
 
 .page-leave-to {
   .bento-grid {
