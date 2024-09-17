@@ -33,6 +33,7 @@
             size="120%"
             background="var(--color-primary)"
             color="var(--color-white)"
+            center
           >
             {{ $t('use-this-template') }}
           </Press>
@@ -58,6 +59,7 @@
             size="120%"
             background="var(--color-primary)"
             color="var(--color-white)"
+            center
           >
             {{ $t('use-this-template') }}
           </Press>
@@ -83,6 +85,7 @@
             size="120%"
             background="var(--color-primary)"
             color="var(--color-white)"
+            center
           >
             {{ $t('use-this-template') }}
           </Press>
@@ -95,18 +98,31 @@
 <script setup lang="ts">
 import { inject } from 'vue'
 import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toast-notification'
 
-const { t: $t } = useI18n()
+const { t: $t, locale } = useI18n()
 const scrumz = useScrumz()
 
 const user = inject<any>('user')
 const router = useRouter()
+const toast = useToast()
+
+const preferredLanguage = locale.value as 'tr' | 'en'
 
 async function create(type: string): Promise<void> {
-  console.log(user)
+  if (type === 'custom') {
+    toast.open({
+      message: $t('coming-soon'),
+      type: 'info',
+      duration: 10000,
+    })
+    return
+  }
+
   const roomName = await scrumz.createRoom({
     uid: user.value.uid,
     type,
+    language: preferredLanguage,
   })
 
   router.push(`/${roomName}`)
@@ -121,8 +137,7 @@ useHead({
 .create {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-top: 4rem;
+  align-items: flex-start;
 
   .card {
     cursor: pointer;
@@ -144,9 +159,6 @@ useHead({
 
 @media (max-aspect-ratio: 1/1) {
   .create {
-    height: 100dvh;
-    margin-top: 0;
-
     .bento-grid {
       padding: 2rem;
       min-height: 100%;

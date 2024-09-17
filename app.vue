@@ -1,13 +1,45 @@
 <template>
   <NuxtLayout name="default">
-    <KonamiCode @activate="debug = $event" />
     <NuxtPage />
+    <KonamiCode @activate="debug = $event" />
   </NuxtLayout>
 </template>
 
 <script setup lang="ts">
-import { getAuth, signInAnonymously } from 'firebase/auth'
+import { getAuth, signInAnonymously, updateProfile } from 'firebase/auth'
 import 'vue-toast-notification/dist/theme-sugar.css'
+import { useToast } from 'vue-toast-notification'
+
+/* Error handler */
+const { t } = useI18n()
+const toast = useToast()
+
+if (window) {
+  window.onunhandledrejection = (event) => {
+    const knownErrors: {
+      [key: string]: string
+    } = {
+      PERMISSION_DENIED: t('permission-denied'),
+    }
+    if (event?.reason?.code in knownErrors) {
+      toast.open({
+        message: knownErrors[event?.reason?.code],
+        type: 'error',
+        duration: 10000,
+      })
+    } else {
+      toast.open({
+        message: String(event?.reason) || '',
+        type: 'error',
+        duration: 10000,
+      })
+    }
+  }
+
+  window.onerror = function (message, _source, _lineNumber, _colno, _error) {
+    console.warn(`UNHANDLED ERROR: ${message}`)
+  }
+}
 
 const user = ref<any>(null)
 const debug = ref<boolean>(false)
@@ -29,6 +61,8 @@ onBeforeMount(async () => {
     await signInAnonymously(getAuth())
   }
   user.value = await getCurrentUser()
+
+  console.log('Signed in as', user.value.displayName)
 
   const config = useRuntimeConfig()
   if (config.public.nodeEnv === 'development' && user.value) {

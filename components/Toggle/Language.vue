@@ -25,6 +25,7 @@ const toggleLanguage = () => {
   border-radius: 50%;
   overflow: hidden;
   background: var(--color-card);
+  flex-shrink: 0;
 
   .language-toggler {
     width: 100%;
@@ -32,7 +33,7 @@ const toggleLanguage = () => {
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    font-size: 24px;
+    font-size: 150%;
     display: flex;
     align-items: center;
     justify-content: center;

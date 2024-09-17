@@ -126,7 +126,6 @@ useHead({
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 4rem;
 
   .logo-card {
     grid-area: logo;
@@ -215,9 +214,6 @@ useHead({
 
 @media (max-aspect-ratio: 1/1) {
   .room {
-    height: 100dvh;
-    margin-top: 0;
-
     .bento-grid {
       padding: 2rem;
       min-height: 100%;
@@ -228,6 +224,8 @@ useHead({
       grid-template-columns: 100%;
       grid-template-rows: 16rem 16rem 16rem;
       align-content: space-between;
+      padding-bottom: 2rem;
+      height: auto;
 
       .coffee-card,
       .info-card,

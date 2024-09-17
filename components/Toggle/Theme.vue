@@ -49,6 +49,7 @@ const toggleTheme = () => {
   overflow: hidden;
   background: var(--color-card);
   transition: background 0.5s;
+  flex-shrink: 0;
 
   .theme-toggler {
     width: 100%;
@@ -56,7 +57,7 @@ const toggleTheme = () => {
     border-radius: 50%;
     border: none;
     cursor: pointer;
-    font-size: 24px;
+    font-size: 150%;
     display: flex;
     align-items: center;
     justify-content: center;

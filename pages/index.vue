@@ -79,8 +79,7 @@ const { t: $t } = useI18n()
 .home {
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-top: 4rem;
+  align-items: flex-start;
 
   .logo {
     grid-area: logo;
@@ -139,11 +138,9 @@ const { t: $t } = useI18n()
 
 @media (max-aspect-ratio: 1/1) {
   .home {
-    height: 100dvh;
-    margin-top: 0;
+    padding: 2rem;
 
     .bento-grid {
-      padding: 2rem;
       min-height: 100%;
       overflow: scroll;
       grid-template-areas:

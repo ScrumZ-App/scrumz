@@ -3,7 +3,7 @@
     name="join"
     :areas="['logo', 'roomNameInput', 'join']"
     :columns="[35]"
-    :height="17"
+    :height="18"
   >
     <NuxtLink to="/"><Logo /></NuxtLink>
     <Card class="room-name-input" :height="9" :width="35">
@@ -45,14 +45,16 @@ import { useToast } from 'vue-toast-notification'
 const router = useRouter()
 const toast = useToast()
 const scrumz = useScrumz()
-const { t: $t } = useI18n()
+const { t: $t, locale } = useI18n()
 
 const isLoading = ref(false)
 const adjective = ref('')
 const noun = ref('')
 
-const adjectives = computed(() => _adjectives['tr-TR'])
-const nouns = computed(() => _nouns['tr-TR'])
+const preferredLanguage = locale.value as 'tr' | 'en'
+
+const adjectives = computed(() => _adjectives[preferredLanguage])
+const nouns = computed(() => _nouns[preferredLanguage])
 const nounRef = useTemplateRef('nounInput') as Ref<
   typeof SuggestiveInput | null
 >
@@ -90,11 +92,11 @@ useHead({
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-top: 4rem;
+  align-items: flex-start;
 
   .room-name-input {
     grid-area: roomNameInput;
+    font-size: 500%;
   }
   .spacer {
     grid-area: spacer;
@@ -104,14 +106,12 @@ useHead({
     grid-area: join;
     display: flex;
     justify-content: end;
+    margin-bottom: 2rem;
   }
 }
 
 @media (max-aspect-ratio: 1/1) {
   .join {
-    height: 100dvh;
-    margin-top: 0;
-
     .bento-grid {
       padding: 2rem;
       min-height: 100%;
@@ -121,12 +121,14 @@ useHead({
       grid-template-rows: 8rem 1fr 20rem 4rem;
       align-content: space-between;
 
-      .room-name-input .icon {
+      .room-name-input {
         font-size: 350%;
-        flex-direction: column;
+        .icon {
+          flex-direction: column;
 
-        & > span {
-          line-height: 1rem;
+          & > span {
+            line-height: 1rem;
+          }
         }
       }
 

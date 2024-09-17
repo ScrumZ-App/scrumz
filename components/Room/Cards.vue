@@ -1,58 +1,80 @@
 <template>
-  <Bento
-    v-if="room"
-    name="room"
-    :areas="['logo card']"
-    :columns="[6, 6, 6, 6, 6]"
-    :height="17"
-  >
-    <Card class="logo-card" flip :width="6" :height="8">
+  <div>
+    <NavBar :name="user.name">
+      <template #avatar>
+        <Press @click="changeName">
+          {{ $t('change-name') }}
+        </Press>
+      </template>
+      <template v-if="room.createdBy === user.uid">
+        <div class="scrum-master-tools">
+          <ToggleEye :open="room.isOpened" @click="toggleVisibility" />
+          <Press
+            center
+            width-may-change
+            :width="smartButtonWidth"
+            @click="onSmartButton"
+          >
+            {{ smartButtonText }}
+          </Press>
+          <ToggleNext :version="room.version" @next="resetVotes" />
+        </div>
+      </template>
+      <template v-else>
+        <Press width-may-change center :width="customMessage ? 10 : 6">
+          <HiddenText
+            :message="customMessage"
+            :text="
+              singleVotes.length + ' / ' + Object.values(room.users).length
+            "
+          />
+        </Press>
+      </template>
+    </NavBar>
+    <Bento
+      v-if="room"
+      name="room"
+      :areas="['logo card']"
+      :columns="[6, 6, 6, 6, 6]"
+      :height="15"
+    >
+      <!-- <Card class="logo-card" flip :width="6" :height="7">
       <template #icon>
         <div>
           <span>{{ $t('scrumz') }}</span>
         </div>
       </template>
       <template #back>
-        <div class="config-card" v-if="user && room">
-          <Press @click="changeName"> {{ $t('change-name') }} </Press>
-          <template v-if="room.createdBy === user.uid">
-            <Press @click="toggleVisibility">
-              <template v-if="room.isOpened">
-                {{ $t('hide-results') }}
-              </template>
-              <template v-else> {{ $t('show-results') }} </template>
-            </Press>
-            <Press @click="resetVotes"> {{ $t('reset-votes') }} </Press>
-          </template>
-        </div>
+        <div class="config-card" v-if="user && room"></div>
       </template>
-    </Card>
-    <Card
-      v-for="option in room.options?.sort((a, b) => a.position - b.position)"
-      class="card"
-      :class="{
-        'voted': isUserVotedForOption(option.position),
-        'most-voted': mostVotedOption === option.position,
-      }"
-      locked
-      mirror
-      :back="room.isOpened"
-      back-title
-      :width="6"
-      :height="8"
-      @click="voteToCard(option)"
-    >
-      <template #title> {{ option.value }} </template>
-      <template #icon>
-        <div class="front-card"></div>
-      </template>
-      <template #back>
-        <div class="back-card">
-          <AvatarGroup :avatars="getAvatarsOfOption(option.position)" />
-        </div>
-      </template>
-    </Card>
-  </Bento>
+    </Card> -->
+      <Card
+        v-for="option in room.options?.sort((a, b) => a.position - b.position)"
+        class="card"
+        :class="{
+          'voted': isUserVotedForOption(option.position),
+          'most-voted': mostVotedOption === option.position,
+        }"
+        locked
+        mirror
+        :back="room.isOpened"
+        back-title
+        :width="6"
+        :height="7"
+        @click="voteToCard(option)"
+      >
+        <template #title> {{ option.value }} </template>
+        <template #icon>
+          <div class="front-card"></div>
+        </template>
+        <template #back>
+          <div class="back-card">
+            <AvatarGroup :avatars="getAvatarsOfOption(option.position)" />
+          </div>
+        </template>
+      </Card>
+    </Bento>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -76,9 +98,20 @@ const props = defineProps({
 })
 
 const debug = inject('debug') as Ref<any>
+const parentUser = inject('user') as Ref<any>
 
 const emit = defineEmits(['change-name'])
 const database = useDatabase()
+
+const customMessage = ref('')
+
+watch(
+  () => props.room.version,
+  () => {
+    customMessage.value = $t('new-round')
+    setTimeout(() => (customMessage.value = ''), 3000)
+  }
+)
 
 // helper functions
 const userAlreadyInRoom = () => {
@@ -88,9 +121,19 @@ const userAlreadyInRoom = () => {
   return users && users[props.user.uid] !== undefined
 }
 
-const fillRole = () => {
+const fillRole = async () => {
   if (!props.user || !props.room) return
   if (debug.value) console.log('User already in room')
+
+  if (props.user.name !== parentUser.value.displayName) {
+    console.log('syncing room name to display name')
+    const userRef = dbRef(
+      useDatabase(),
+      'rooms/' + props.roomId + '/users/' + props.user.uid
+    )
+    await update(userRef, { name: parentUser.value.displayName })
+  }
+
   const users = props.room.users
   props.user.role = users[props.user.uid].role
   props.user.name = users[props.user.uid].name
@@ -123,6 +166,32 @@ async function load() {
 
 const changeName = () => {
   emit('change-name')
+}
+
+const smartButtonText = computed(() => {
+  if (!props.room) return ''
+  if (props.room.isOpened) return $t('reset-votes')
+  const voteCount = singleVotes.value.length
+  const userCount = Object.values(props.room.users).length
+  if (voteCount >= userCount) return $t('show-results')
+  return voteCount + ' / ' + userCount
+})
+
+const smartButtonWidth = computed(() => {
+  if (!props.room) return 1
+  if (props.room.isOpened) return 8
+  const voteCount = singleVotes.value.length
+  const userCount = Object.values(props.room.users).length
+  if (voteCount >= userCount) return 8
+  return 8
+})
+
+const onSmartButton = () => {
+  if (props.room.isOpened) return resetVotes()
+  const voteCount = singleVotes.value.length
+  const userCount = Object.values(props.room.users).length
+  if (voteCount >= userCount) return toggleVisibility()
+  return false
 }
 
 const toggleVisibility = async () => {
@@ -207,3 +276,23 @@ defineExpose({
   load,
 })
 </script>
+
+<style lang="scss">
+.scrum-master-tools {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+@media (max-aspect-ratio: 1/1) {
+  .scrum-master-tools {
+    width: 100%;
+    gap: 1rem;
+
+    .toggle-eye-component,
+    .toggle-next-component {
+      display: none;
+    }
+  }
+}
+</style>

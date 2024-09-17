@@ -1,5 +1,9 @@
 <template>
-  <div class="button-component" :class="{ badge, loading }" :style="style">
+  <div
+    class="button-component"
+    :class="{ badge, loading, widthMayChange }"
+    :style="style"
+  >
     <slot />
     <div v-if="badge" class="status-badge" />
   </div>
@@ -39,6 +43,14 @@ const props = defineProps({
     type: String,
     default: 'var(--color-badge)',
   },
+  center: {
+    type: Boolean,
+    default: false,
+  },
+  widthMayChange: {
+    type: Boolean,
+    default: false,
+  },
 })
 
 const style = computed(() => {
@@ -50,6 +62,8 @@ const style = computed(() => {
     'background': props.background,
     'color': props.color,
     '--badge-position': `${props.height <= 2 ? 0.5 : 1}rem`,
+    'justify-content': props.center ? 'center' : 'flex-start',
+    'padding': props.center ? '0' : '0 2rem 0.3rem',
   }
 })
 </script>
@@ -62,14 +76,12 @@ const style = computed(() => {
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  padding: 0 0 0rem 2rem;
   border-radius: var(--border-radius);
   text-align: left;
   text-decoration: none;
   position: relative;
   overflow: hidden;
-  padding: 0 0 0.3rem 2rem;
+  flex-shrink: 0;
   box-shadow: inset 0 0 0 1px #fff2;
 
   .status-badge {
@@ -81,6 +93,10 @@ const style = computed(() => {
     right: var(--badge-position);
     background: var(--badge-color);
     box-shadow: 0 0 0 0 var(--badge-color);
+  }
+
+  &.widthMayChange {
+    transition: width 0.6s;
   }
 
   &.loading {

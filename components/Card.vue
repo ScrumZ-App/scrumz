@@ -136,7 +136,7 @@ const style = computed(() => {
       justify-content: center;
       width: 100%;
       height: 100%;
-      font-size: 500%;
+      font-size: 100%;
     }
   }
 

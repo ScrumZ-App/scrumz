@@ -2,7 +2,7 @@
   "scrumz": "scrumz",
   "home-title": "new generation scrum poker",
   "coffee": "coffee",
-  "support-us": "Please Support Us 🥺",
+  "support-us": "please support us 🥺",
   "mood": "mood",
   "join-room": "join room",
   "create-room": "create room",
@@ -33,8 +33,11 @@
     "customize-your-own-deck": "customize your own deck"
   },
   "use-this-template": "use this template",
-  "room-not-found": "Room not found",
+  "room-not-found": "room not found",
   "hide-results": "hide results",
   "show-results": "show results",
-  "reset-votes": "reset votes"
+  "reset-votes": "reset votes",
+  "new-round": "new round",
+  "permission-denied": "missing or insufficient permissions",
+  "coming-soon": "coming soon"
 }

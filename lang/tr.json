@@ -2,7 +2,7 @@
   "scrumz": "scrumz",
   "home-title": "yeni nesil scrum poker",
   "coffee": "kahve",
-  "support-us": "Lütfen bizi destekleyin 🥺",
+  "support-us": "lütfen bizi destekleyin 🥺",
   "mood": "mood",
   "join-room": "odaya katıl",
   "create-room": "oda oluştur",
@@ -33,8 +33,11 @@
     "customize-your-own-deck": "kartları kişiselleştir"
   },
   "use-this-template": "bu şablonu kullan",
-  "room-not-found": "Oda bulunamadı",
+  "room-not-found": "oda bulunamadı",
   "hide-results": "sonuçları gizle",
   "show-results": "sonuçları göster",
-  "reset-votes": "oyları sıfırla"
+  "reset-votes": "oyları sıfırla",
+  "new-round": "yeni tur",
+  "permission-denied": "izin eksik veya yetersiz",
+  "coming-soon": "pek yakında"
 }

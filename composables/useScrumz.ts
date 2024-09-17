@@ -37,9 +37,9 @@ const defaultRooms: { [key: string]: Option[] } = {
 }
 
 const scrumz = {
-  createNewId: function (): string {
-    const nounsArr = [...nouns['tr-TR']]
-    const adjectivesArr = [...adjectives['tr-TR']]
+  createNewId: function (language: 'tr' | 'en'): string {
+    const nounsArr = [...nouns[language]]
+    const adjectivesArr = [...adjectives[language]]
     return (
       adjectivesArr[Math.floor(Math.random() * adjectivesArr.length)] +
       '-' +
@@ -57,10 +57,11 @@ const scrumz = {
   createRoom: async function (options: {
     uid: string
     type: string
+    language: 'tr' | 'en'
     customOptions?: Option[]
   }): Promise<string> {
-    const { uid, type, customOptions } = options
-    const newId = this.createNewId()
+    const { uid, type, language, customOptions } = options
+    const newId = this.createNewId(language)
     const roomRef = dbRef(useDatabase(), `rooms/${newId}`)
 
     await update(roomRef, {

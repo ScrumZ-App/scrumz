@@ -15,9 +15,9 @@ if (process.env.NODE_ENV !== 'production') {
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  app: {
-    pageTransition: { name: 'page', mode: 'out-in' },
-  },
+  // app: {
+  //   pageTransition: { name: 'page', mode: 'out-in' },
+  // },
 
   typescript: {
     typeCheck: true,

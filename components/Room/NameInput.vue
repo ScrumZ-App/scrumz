@@ -10,6 +10,7 @@
     <Card class="user-name-input" :height="10" :width="35">
       <template #title></template>
       <template #icon>
+        <UserAvatar class="avatar" :name="name" />
         <TextInput
           v-model="name"
           :placeholder="$t('your-name')"
@@ -29,6 +30,7 @@
 
 <script setup lang="ts">
 import { ref as dbRef, update } from 'firebase/database'
+import { updateProfile } from 'firebase/auth'
 import { ref, onMounted } from 'vue'
 import { useDatabase } from 'vuefire'
 
@@ -46,6 +48,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['set'])
 
+const parentUser = inject('user') as Ref<any>
 const isLoading = ref(false)
 const name = ref('')
 
@@ -63,12 +66,20 @@ async function selectName() {
     name: name.value,
   })
 
+  await updateProfile(parentUser.value, {
+    displayName: name.value,
+  })
+
   isLoading.value = false
   emit('set', name.value)
 }
 
 onMounted(() => {
   name.value = props.user.name
+
+  if (!name.value && parentUser.value.displayName) {
+    emit('set', parentUser.value.displayName)
+  }
 })
 </script>
 
@@ -77,11 +88,21 @@ onMounted(() => {
   height: 100%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-top: 4rem;
+  align-items: flex-start;
 
   .user-name-input {
     grid-area: userNameInput;
+    position: relative;
+    font-size: 500%;
+
+    .avatar {
+      grid-area: avatar;
+      width: 3rem;
+      height: 3rem;
+      bottom: 0.5rem;
+      right: 0.5rem;
+      position: absolute;
+    }
   }
   .change-button {
     grid-area: changeButton;
@@ -101,9 +122,6 @@ onMounted(() => {
 
 @media (max-aspect-ratio: 1/1) {
   .name-input {
-    height: 100dvh;
-    margin-top: 0;
-
     .bento-grid {
       padding: 2rem;
       min-height: 100%;
@@ -113,15 +131,14 @@ onMounted(() => {
       grid-template-rows: 8rem 1fr 20rem;
       align-content: space-between;
 
-      .user-name-input .icon {
-        flex-direction: column;
+      .user-name-input {
+        font-size: 350%;
+        .icon {
+          flex-direction: column;
 
-        input {
-          font-size: 60%;
-        }
-
-        & > span {
-          line-height: 1rem;
+          & > span {
+            line-height: 1rem;
+          }
         }
       }
 
