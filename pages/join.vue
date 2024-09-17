@@ -12,18 +12,18 @@
         <SuggestiveInput
           v-model="adjective"
           persistent-focus
-          :list="adjectives"
+          :lists="adjectives"
           :disabled="isLoading"
-          :placeholder="adjectives[0]"
+          :placeholder="adjectives[0][0]"
           @enter="selectAdjective"
         />
         <span>&nbsp;-&nbsp;</span>
         <SuggestiveInput
           ref="nounInput"
           v-model="noun"
-          :list="nouns"
+          :lists="nouns"
           :disabled="isLoading"
-          :placeholder="nouns[0]"
+          :placeholder="nouns[0][0]"
           @enter="join"
         />
       </template>
@@ -45,16 +45,30 @@ import { useToast } from 'vue-toast-notification'
 const router = useRouter()
 const toast = useToast()
 const scrumz = useScrumz()
-const { t: $t, locale } = useI18n()
+const { t: $t, locale, locales } = useI18n()
 
 const isLoading = ref(false)
 const adjective = ref('')
 const noun = ref('')
 
-const preferredLanguage = locale.value as 'tr' | 'en'
+enum Language {
+  tr = 'tr',
+  en = 'en',
+}
 
-const adjectives = computed(() => _adjectives[preferredLanguage])
-const nouns = computed(() => _nouns[preferredLanguage])
+const preferredLanguage = locale.value as Language
+const otherLanguages = [...locales.value]
+  .map((el) => el.code as Language)
+  .filter((el) => el !== preferredLanguage)
+
+const adjectives = computed(() => [
+  _adjectives[preferredLanguage],
+  ...otherLanguages.map((el) => _adjectives[el]),
+])
+const nouns = computed(() => [
+  _nouns[preferredLanguage],
+  ...otherLanguages.map((el) => _nouns[el]),
+])
 const nounRef = useTemplateRef('nounInput') as Ref<
   typeof SuggestiveInput | null
 >

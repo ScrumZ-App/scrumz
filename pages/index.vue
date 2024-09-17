@@ -11,6 +11,10 @@
     ]"
   >
     <Logo />
+    <div class="mobile-buttons">
+      <ToggleLanguage />
+      <ToggleTheme />
+    </div>
     <Card class="coffee-card" flip badge>
       <template #title>{{ $t('coffee') }}</template>
       <template #icon>
@@ -134,6 +138,12 @@ const { t: $t } = useI18n()
     grid-area: spacer;
     display: none;
   }
+  .mobile-buttons {
+    grid-area: mobile-buttons;
+    display: none;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
 }
 
 @media (max-aspect-ratio: 1/1) {
@@ -146,10 +156,11 @@ const { t: $t } = useI18n()
       grid-template-areas:
         'logo'
         'spacer'
+        'mobile-buttons'
         'join'
         'create';
       grid-template-columns: 100%;
-      grid-template-rows: 8rem 1fr 4rem 8rem;
+      grid-template-rows: 8rem 1fr 4rem 4rem 8rem;
       align-content: space-between;
 
       .coffee-card,
@@ -157,8 +168,9 @@ const { t: $t } = useI18n()
       .mood-card {
         display: none;
       }
-      .spacer {
-        display: block;
+      .spacer,
+      .mobile-buttons {
+        display: flex;
       }
     }
   }

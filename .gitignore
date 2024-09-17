@@ -4,6 +4,7 @@
 .nuxt
 .nitro
 .cache
+.firebase
 dist
 
 # Node dependencies

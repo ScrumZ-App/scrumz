@@ -35,8 +35,8 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  list: {
-    type: Array as PropType<string[]>,
+  lists: {
+    type: Array as PropType<string[][]>,
     default: () => [],
   },
   persistentFocus: {
@@ -79,13 +79,20 @@ function onBlur(): void {
 }
 
 function updateSuggestions(query: string): void {
-  const suggestions = props.list.filter((item) => item.startsWith(query))
-  if (suggestions.includes(query)) {
-    querySuggestions.value = [query]
-    return
-  }
+  let suggestions: string[] = []
+  for (const list of props.lists) {
+    const subSuggestions = list.filter((item) => item.startsWith(query))
+    if (subSuggestions.includes(query)) {
+      suggestions = [query]
+      break
+    }
 
-  querySuggestions.value = suggestions.sort(() => Math.random() - 0.5)
+    suggestions = [
+      ...suggestions,
+      ...subSuggestions.sort(() => Math.random() - 0.5),
+    ]
+  }
+  querySuggestions.value = suggestions
 }
 
 function filterInput(): void {
