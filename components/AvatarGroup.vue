@@ -101,7 +101,7 @@ function hidePopover() {
   hoveredAvatarIndex.value = -1
 }
 
-// TODO: On mouse move'u sadece popover'lar için yap
+// TODO: On mouse move should be only for popover elements.
 // function onMouseMove(event: MouseEvent | TouchEvent) {
 //   const isTouchEvent = 'touches' in event;
 //   const x = isTouchEvent ? event.touches[0].clientX : event.clientX;
