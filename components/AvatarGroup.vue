@@ -6,6 +6,8 @@
       class="avatar"
       @mouseover="showPopover(index)"
       @mouseleave="hidePopover"
+      @touchstart="showPopover(index)"
+      @touchend="hidePopover"
     >
       <UserAvatar :name="avatar" :size="48" />
     </div>
@@ -16,6 +18,8 @@
       class="avatar more-avatars"
       @mouseover="showPopover(maxAvatars + 1)"
       @mouseleave="hidePopover"
+      @touchstart="showPopover(maxAvatars + 1)"
+      @touchend="hidePopover"
     >
       +{{ remainingAvatars.length }}
     </div>
@@ -86,16 +90,21 @@ function hidePopover() {
   hoveredAvatarIndex.value = -1
 }
 
-function onMouseMove(event: MouseEvent) {
-  cursor.value = { x: event.clientX, y: event.clientY }
+function onMouseMove(event: MouseEvent | TouchEvent) {
+  const isTouchEvent = 'touches' in event;
+  const x = isTouchEvent ? event.touches[0].clientX : event.clientX;
+  const y = isTouchEvent ? event.touches[0].clientY : event.clientY;
+  cursor.value = { x, y };
 }
 
 onMounted(() => {
   document.addEventListener('mousemove', onMouseMove)
+  document.addEventListener('touchmove', onMouseMove) // Added touchmove for mobile
 })
 
 onUnmounted(() => {
   document.removeEventListener('mousemove', onMouseMove)
+  document.removeEventListener('touchmove', onMouseMove) // Remove touchmove on unmount
 })
 </script>
 
