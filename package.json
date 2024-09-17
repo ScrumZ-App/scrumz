@@ -44,5 +44,8 @@
     "vue-qrcode": "^2.2.2",
     "vue-toast-notification": "^3.1.2",
     "vuefire": "^3.2.0"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.6.1"
   }
 }
