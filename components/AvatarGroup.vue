@@ -4,9 +4,9 @@
       v-for="(avatar, index) in displayedAvatars"
       :key="index"
       class="avatar"
-      @mouseover="showPopover(index)"
+      @mouseover="showPopover(index, $event)"
       @mouseleave="hidePopover"
-      @touchstart="showPopover(index)"
+      @touchstart="showPopover(index, $event)"
       @touchend="hidePopover"
     >
       <UserAvatar :name="avatar" :size="48" />
@@ -16,9 +16,9 @@
     <div
       v-if="remainingAvatars.length"
       class="avatar more-avatars"
-      @mouseover="showPopover(maxAvatars + 1)"
+      @mouseover="showPopover(maxAvatars + 1, $event)"
       @mouseleave="hidePopover"
-      @touchstart="showPopover(maxAvatars + 1)"
+      @touchstart="showPopover(maxAvatars + 1, $event)"
       @touchend="hidePopover"
     >
       +{{ remainingAvatars.length }}
@@ -30,8 +30,8 @@
         v-if="isPopoverVisible"
         class="popover"
         :style="{
-          top: `${cursor.y}px`,
-          left: `${cursor.x}px`,
+          top: `${popoverPosition.y}px`,
+          left: `${popoverPosition.x}px`,
         }"
       >
         <div v-if="hoveredAvatarIndex === maxAvatars + 1">
@@ -62,9 +62,9 @@ const props = defineProps({
   },
 })
 
-const cursor = ref({ x: 0, y: 0 })
 const isPopoverVisible = ref(false)
 const hoveredAvatarIndex = ref(-1)
+const popoverPosition = ref({ x: 0, y: 0 })
 
 const displayedAvatars = computed(() => {
   if (props.avatars.length <= maxAvatars) {
@@ -80,8 +80,19 @@ const remainingAvatars = computed(() => {
   return props.avatars.slice(maxAvatars - 1)
 })
 
-function showPopover(index: number) {
+function showPopover(index: number, event: Event) {
   hoveredAvatarIndex.value = index
+
+  // Get the position of the clicked element
+  const popoverElement = event.target as HTMLElement
+  const popoverElementRect = popoverElement.getBoundingClientRect()
+
+  // Set the popover position
+  popoverPosition.value = {
+    x: popoverElementRect.left + window.scrollX + popoverElementRect.width / 2,
+    y: popoverElementRect.top + window.scrollY + popoverElementRect.height
+  }
+
   isPopoverVisible.value = true
 }
 
@@ -90,22 +101,23 @@ function hidePopover() {
   hoveredAvatarIndex.value = -1
 }
 
-function onMouseMove(event: MouseEvent | TouchEvent) {
-  const isTouchEvent = 'touches' in event;
-  const x = isTouchEvent ? event.touches[0].pageX : event.pageX;
-  const y = isTouchEvent ? event.touches[0].pageY : event.pageY;
-  cursor.value = { x, y };
-}
+// TODO: On mouse move should be only for popover elements.
+// function onMouseMove(event: MouseEvent | TouchEvent) {
+//   const isTouchEvent = 'touches' in event;
+//   const x = isTouchEvent ? event.touches[0].clientX : event.clientX;
+//   const y = isTouchEvent ? event.touches[0].clientY : event.clientY;
+//   cursor.value = { x, y };
+// }
 
-onMounted(() => {
-  document.addEventListener('mousemove', onMouseMove)
-  document.addEventListener('touchmove', onMouseMove) // Added touchmove for mobile
-})
+// onMounted(() => {
+//   document.addEventListener('mousemove', onMouseMove)
+//   document.addEventListener('touchmove', onMouseMove) // Added touchmove for mobile
+// })
 
-onUnmounted(() => {
-  document.removeEventListener('mousemove', onMouseMove)
-  document.removeEventListener('touchmove', onMouseMove) // Remove touchmove on unmount
-})
+// onUnmounted(() => {
+//   document.removeEventListener('mousemove', onMouseMove)
+//   document.removeEventListener('touchmove', onMouseMove) // Remove touchmove on unmount
+// })
 </script>
 
 <style lang="scss">
