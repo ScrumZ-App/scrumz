@@ -30,8 +30,8 @@
         v-if="isPopoverVisible"
         class="popover"
         :style="{
-          top: `${cursor.y}px`,
-          left: `${cursor.x}px`,
+          top: `${popoverPosition.y}px`,
+          left: `${popoverPosition.x}px`,
         }"
       >
         <div v-if="hoveredAvatarIndex === maxAvatars + 1">
@@ -62,7 +62,6 @@ const props = defineProps({
   },
 })
 
-const cursor = ref({ x: 0, y: 0 })
 const isPopoverVisible = ref(false)
 const hoveredAvatarIndex = ref(-1)
 const popoverPosition = ref({ x: 0, y: 0 })
@@ -90,22 +89,11 @@ function showPopover(index: number, event: Event) {
 
   // Set the popover position
   popoverPosition.value = {
-    x: popoverElementRect.left + popoverElementRect.width / 2,
-    y: popoverElementRect.top + popoverElementRect.height,
+    x: popoverElementRect.left + window.scrollX + popoverElementRect.width / 2,
+    y: popoverElementRect.top + window.scrollY + popoverElementRect.height
   }
 
-  cursor.value = popoverPosition.value
   isPopoverVisible.value = true
-}
-
-function updatePopoverPosition() {
-  if (isPopoverVisible.value) {
-    // Adjust cursor position based on scroll
-    cursor.value = {
-      x: popoverPosition.value.x,
-      y: popoverPosition.value.y
-    }
-  }
 }
 
 function hidePopover() {
@@ -113,26 +101,23 @@ function hidePopover() {
   hoveredAvatarIndex.value = -1
 }
 
-function onMouseMove(event: MouseEvent | TouchEvent) {
-  const isTouchEvent = 'touches' in event;
-  const x = isTouchEvent ? event.touches[0].clientX : event.clientX;
-  const y = isTouchEvent ? event.touches[0].clientY : event.clientY;
-  cursor.value = { x, y };
-}
+// TODO: On mouse move'u sadece popover'lar için yap
+// function onMouseMove(event: MouseEvent | TouchEvent) {
+//   const isTouchEvent = 'touches' in event;
+//   const x = isTouchEvent ? event.touches[0].clientX : event.clientX;
+//   const y = isTouchEvent ? event.touches[0].clientY : event.clientY;
+//   cursor.value = { x, y };
+// }
 
-onMounted(() => {
-  document.addEventListener('mousemove', onMouseMove)
-  document.addEventListener('touchmove', onMouseMove) // Added touchmove for mobile
-  window.addEventListener('scroll', updatePopoverPosition) // Scroll event listener
-  window.addEventListener('resize', updatePopoverPosition) // Resize event listener
-})
+// onMounted(() => {
+//   document.addEventListener('mousemove', onMouseMove)
+//   document.addEventListener('touchmove', onMouseMove) // Added touchmove for mobile
+// })
 
-onUnmounted(() => {
-  document.removeEventListener('mousemove', onMouseMove)
-  document.removeEventListener('touchmove', onMouseMove) // Remove touchmove on unmount
-  window.removeEventListener('scroll', updatePopoverPosition) // Remove scroll event listener
-  window.removeEventListener('resize', updatePopoverPosition) // Remove resize event listener
-})
+// onUnmounted(() => {
+//   document.removeEventListener('mousemove', onMouseMove)
+//   document.removeEventListener('touchmove', onMouseMove) // Remove touchmove on unmount
+// })
 </script>
 
 <style lang="scss">
