@@ -92,8 +92,8 @@ function hidePopover() {
 
 function onMouseMove(event: MouseEvent | TouchEvent) {
   const isTouchEvent = 'touches' in event;
-  const x = isTouchEvent ? event.touches[0].clientX : event.clientX;
-  const y = isTouchEvent ? event.touches[0].clientY : event.clientY;
+  const x = isTouchEvent ? event.touches[0].pageX : event.pageX;
+  const y = isTouchEvent ? event.touches[0].pageY : event.pageY;
   cursor.value = { x, y };
 }
 
