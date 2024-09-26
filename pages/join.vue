@@ -129,7 +129,8 @@ useHead({
     .bento-grid {
       padding: 2rem;
       min-height: 100%;
-      overflow: scroll;
+      overflow: hidden;
+      height: auto;
       grid-template-areas: 'logo' 'spacer' 'roomNameInput' 'join';
       grid-template-columns: 100%;
       grid-template-rows: 8rem 1fr 20rem 4rem;

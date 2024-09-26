@@ -6,8 +6,9 @@
       class="avatar"
       @mouseover="showPopover(index, $event)"
       @mouseleave="hidePopover"
-      @touchstart="showPopover(index, $event)"
-      @touchend="hidePopover"
+      @touchstart="updatePopover(index, $event)"
+      @touchend="updatePopover(index, $event)"
+      @touchmove="hidePopoverIfDrag($event)"
     >
       <UserAvatar :name="avatar" :size="48" />
     </div>
@@ -18,8 +19,9 @@
       class="avatar more-avatars"
       @mouseover="showPopover(maxAvatars + 1, $event)"
       @mouseleave="hidePopover"
-      @touchstart="showPopover(maxAvatars + 1, $event)"
-      @touchend="hidePopover"
+      @touchstart="updatePopover(maxAvatars + 1, $event)"
+      @touchend="updatePopover(maxAvatars + 1, $event)"
+      @touchmove="hidePopoverIfDrag($event)"
     >
       +{{ remainingAvatars.length }}
     </div>
@@ -30,8 +32,8 @@
         v-if="isPopoverVisible"
         class="popover"
         :style="{
-          top: `${popoverPosition.y}px`,
-          left: `${popoverPosition.x}px`,
+          top: `${cursor.y}px`,
+          left: `${cursor.x}px`,
         }"
       >
         <div v-if="hoveredAvatarIndex === maxAvatars + 1">
@@ -62,6 +64,7 @@ const props = defineProps({
   },
 })
 
+const cursor = ref({ x: 0, y: 0, startX: 0, startY: 0 })
 const isPopoverVisible = ref(false)
 const hoveredAvatarIndex = ref(-1)
 const popoverPosition = ref({ x: 0, y: 0 })
@@ -80,7 +83,12 @@ const remainingAvatars = computed(() => {
   return props.avatars.slice(maxAvatars - 1)
 })
 
-function showPopover(index: number, event: Event) {
+function showPopover(index: number, event: TouchEvent | MouseEvent) {
+  updatePopover(index, event)
+  isPopoverVisible.value = true
+}
+
+function updatePopover(index: number, event: TouchEvent | MouseEvent) {
   hoveredAvatarIndex.value = index
 
   // Get the position of the clicked element
@@ -90,10 +98,30 @@ function showPopover(index: number, event: Event) {
   // Set the popover position
   popoverPosition.value = {
     x: popoverElementRect.left + window.scrollX + popoverElementRect.width / 2,
-    y: popoverElementRect.top + window.scrollY + popoverElementRect.height
+    y: popoverElementRect.top + window.scrollY + popoverElementRect.height,
   }
+  const isTouchEvent = 'touches' in event
+  if (isTouchEvent) {
+    console.log('uu')
+    cursor.value.x = event.touches[0]?.clientX || 0
+    cursor.value.y = event.touches[0]?.clientY || 0
+    cursor.value.startX = cursor.value.x
+    cursor.value.startY = cursor.value.y
+  }
+}
 
-  isPopoverVisible.value = true
+function hidePopoverIfDrag(event: TouchEvent | MouseEvent) {
+  const isTouchEvent = 'touches' in event
+  const x = isTouchEvent ? event.touches[0].clientX : event.clientX
+  const y = isTouchEvent ? event.touches[0].clientY : event.clientY
+  console.log(x, cursor.value.x)
+
+  if (
+    Math.abs(x - cursor.value.startX) > 10 ||
+    Math.abs(y - cursor.value.startY) > 10
+  ) {
+    hidePopover()
+  }
 }
 
 function hidePopover() {
@@ -102,22 +130,23 @@ function hidePopover() {
 }
 
 // TODO: On mouse move should be only for popover elements.
-// function onMouseMove(event: MouseEvent | TouchEvent) {
-//   const isTouchEvent = 'touches' in event;
-//   const x = isTouchEvent ? event.touches[0].clientX : event.clientX;
-//   const y = isTouchEvent ? event.touches[0].clientY : event.clientY;
-//   cursor.value = { x, y };
-// }
+function onMouseMove(event: MouseEvent | TouchEvent) {
+  const isTouchEvent = 'touches' in event
+  const x = isTouchEvent ? event.touches[0].clientX : event.clientX
+  const y = isTouchEvent ? event.touches[0].clientY : event.clientY
+  cursor.value.x = x
+  cursor.value.y = y
+}
 
-// onMounted(() => {
-//   document.addEventListener('mousemove', onMouseMove)
-//   document.addEventListener('touchmove', onMouseMove) // Added touchmove for mobile
-// })
+onMounted(() => {
+  document.addEventListener('mousemove', onMouseMove)
+  document.addEventListener('scroll', hidePopover)
+})
 
-// onUnmounted(() => {
-//   document.removeEventListener('mousemove', onMouseMove)
-//   document.removeEventListener('touchmove', onMouseMove) // Remove touchmove on unmount
-// })
+onUnmounted(() => {
+  document.removeEventListener('mousemove', onMouseMove)
+  // document.removeEventListener('touchmove', onMouseMove) // Remove touchmove on unmount
+})
 </script>
 
 <style lang="scss">
@@ -126,7 +155,7 @@ function hidePopover() {
   gap: 0.5rem;
   position: relative;
 
-  .avatar {
+  & > .avatar {
     border: 0.2rem solid var(--color-card);
     border-radius: 50%;
     margin-right: -1.5rem;
@@ -137,7 +166,8 @@ function hidePopover() {
       margin-right: 0;
     }
 
-    img {
+    img,
+    svg {
       width: 3rem;
       height: 3rem;
       border-radius: 50%;
@@ -161,8 +191,9 @@ function hidePopover() {
 }
 
 .popover {
-  position: absolute;
-  background-color: var(--color-card);
+  position: fixed;
+  background-color: var(--color-popover-card);
+  color: var(--color-popover-text);
   box-shadow: 0 0 2rem rgba(0, 0, 0, 0.1);
   padding: 1rem;
   border-radius: var(--border-radius);
@@ -170,6 +201,13 @@ function hidePopover() {
   left: 0;
   transform: translate(-50%, 1.2rem);
   pointer-events: none;
+
+  svg {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 3rem;
+    height: 3rem;
+  }
 
   &:after {
     content: '';
@@ -180,7 +218,7 @@ function hidePopover() {
     top: 0.1rem;
     left: 50%;
     transform: translateX(-50%) rotate(45deg);
-    background-color: #fff;
+    background-color: var(--color-popover-card);
     border-radius: 0.2rem;
     clip-path: polygon(0 0, 40% 0, 0 50%);
   }

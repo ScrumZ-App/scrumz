@@ -162,7 +162,8 @@ useHead({
     .bento-grid {
       padding: 2rem;
       min-height: 100%;
-      overflow: scroll;
+      overflow: hidden;
+      height: auto;
       grid-template-areas:
         'logo'
         'fibonacci'

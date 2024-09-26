@@ -100,7 +100,7 @@ const props = defineProps({
 const debug = inject('debug') as Ref<any>
 const parentUser = inject('user') as Ref<any>
 
-const emit = defineEmits(['change-name'])
+const emit = defineEmits(['change-name', 'fill-role'])
 const database = useDatabase()
 
 const customMessage = ref('')
@@ -122,10 +122,13 @@ const userAlreadyInRoom = () => {
 }
 
 const fillRole = async () => {
-  if (!props.user || !props.room) return
+  if (!props.user || !props.room || !props.user.name) return
   if (debug.value) console.log('User already in room')
 
-  if (props.user.name !== parentUser.value.displayName) {
+  if (
+    props.user.name !== parentUser.value.displayName &&
+    parentUser.value.displayName
+  ) {
     console.log('syncing room name to display name')
     const userRef = dbRef(
       useDatabase(),
@@ -135,8 +138,11 @@ const fillRole = async () => {
   }
 
   const users = props.room.users
-  props.user.role = users[props.user.uid].role
-  props.user.name = users[props.user.uid].name
+
+  emit('fill-role', {
+    role: users[props.user.uid].role,
+    name: users[props.user.uid].name,
+  })
 }
 
 const addUserToRoom = async () => {
@@ -148,7 +154,7 @@ const addUserToRoom = async () => {
   )
   try {
     await set(usersRef, {
-      name: '',
+      name: parentUser?.value?.displayName || '',
       role: 'developer',
     })
   } catch (error) {

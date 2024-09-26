@@ -1,38 +1,41 @@
 <template>
-  <template v-if="loading">
-    <div class="loading">
-      <UserAvatar :name="randomLoader" :size="128" />
-    </div>
-  </template>
-  <RoomNameInput
-    v-else-if="user && (!user.name || showUserInput)"
-    :room-id="roomId"
-    :user="user"
-    @set="
-      (username) => {
-        if (!user) return
-        showUserInput = false
-        user.name = username
-      }
-    "
-  />
-  <RoomCards
-    ref="roomCardsRef"
-    v-if="room && user"
-    v-show="!loading && user.name && !showUserInput"
-    :room="room"
-    :user="user"
-    :room-id="roomId"
-    @changeName="() => (showUserInput = true)"
-  />
-  <DebugCode v-if="debug">
-    <span>Loading: {{ loading }}</span>
-    <span>Room ID: {{ roomId }}</span>
-    <span>User: {{ user?.uid }}</span>
-    <span>Role: {{ user?.role }}</span>
-    <span>Raw Room Info:</span>
-    <span>{{ JSON.stringify(room, null, 2) }}</span>
-  </DebugCode>
+  <div>
+    <template v-if="loading">
+      <div class="loading">
+        <UserAvatar :name="randomLoader" :size="128" />
+      </div>
+    </template>
+    <RoomNameInput
+      v-else-if="user && (!user.name || showUserInput)"
+      :room-id="roomId"
+      :user="user"
+      @set="
+        (username: string) => {
+          if (!user) return
+          showUserInput = false
+          user.name = username
+        }
+      "
+    />
+    <RoomCards
+      v-if="room && user"
+      v-show="!loading && user.name && !showUserInput"
+      ref="roomCardsRef"
+      :room="room"
+      :user="user"
+      :room-id="roomId"
+      @change-name="() => (showUserInput = true)"
+      @fill-role="fillRole"
+    />
+    <DebugCode v-if="debug">
+      <span>Loading: {{ loading }}</span>
+      <span>Room ID: {{ roomId }}</span>
+      <span>User: {{ user?.uid }}</span>
+      <span>Role: {{ user?.role }}</span>
+      <span>Raw Room Info:</span>
+      <span>{{ JSON.stringify(room, null, 2) }}</span>
+    </DebugCode>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -71,6 +74,13 @@ onMounted(async () => {
     user.value.role = 'developer'
   }
 })
+
+function fillRole({ role, name }: { role: string; name: string }): void {
+  if (!user.value || !room.value) return
+  if (debug.value) console.log('Filling role', role, user)
+  user.value.name = role
+  user.value.name = name
+}
 
 watch(
   room,
@@ -217,7 +227,8 @@ useHead({
     .bento-grid {
       padding: 2rem;
       min-height: 100%;
-      overflow: scroll;
+      overflow: hidden;
+      height: auto;
       grid-template-areas:
         'logo'
         'card';

@@ -148,11 +148,11 @@ const { t: $t } = useI18n()
 
 @media (max-aspect-ratio: 1/1) {
   .home {
-    padding: 2rem;
-
     .bento-grid {
+      padding: 2rem;
       min-height: 100%;
-      overflow: scroll;
+      overflow: hidden;
+      height: auto;
       grid-template-areas:
         'logo'
         'spacer'

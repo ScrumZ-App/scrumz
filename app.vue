@@ -16,6 +16,7 @@ const toast = useToast()
 
 if (window) {
   window.onunhandledrejection = (event) => {
+    console.error(event)
     const knownErrors: {
       [key: string]: string
     } = {
@@ -103,6 +104,8 @@ if (process.client) {
   --color-badge: var(--color-black);
   --color-badge-active: var(--color-white);
   --color-border: var(--color-black);
+  --color-popover-card: #fff;
+  --color-popover-text: var(--color-black);
   --loading-gradient: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0) 0%,
@@ -138,7 +141,7 @@ html {
     --color-background: #1a1a1a;
     --color-primary: #ff3e6c;
     --color-white: #fff;
-    --color-black: #030047;
+    --color-black: #151515;
     --color-skeleton: #2f2f2f;
     --color-faded: #9b9ab8;
     --color-text: var(--color-white);
@@ -147,6 +150,8 @@ html {
     --color-badge: var(--color-primary);
     --color-badge-active: #1f1f1f;
     --color-border: var(--color-white);
+    --color-popover-card: #fff;
+    --color-popover-text: var(--color-black);
     --loading-gradient: linear-gradient(
       90deg,
       rgba(255, 255, 255, 0) 0%,
@@ -160,7 +165,7 @@ html {
   --color-background: #1a1a1a;
   --color-primary: #ff3e6c;
   --color-white: #fff;
-  --color-black: #030047;
+  --color-black: #151515;
   --color-skeleton: #2f2f2f;
   --color-faded: #9b9ab8;
   --color-text: var(--color-white);
@@ -169,6 +174,8 @@ html {
   --color-badge: var(--color-primary);
   --color-badge-active: #1f1f1f;
   --color-border: var(--color-white);
+  --color-popover-card: #fff;
+  --color-popover-text: var(--color-black);
   --loading-gradient: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0) 0%,
